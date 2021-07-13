@@ -1,21 +1,23 @@
 package ui;
 
+import DTO.User;
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
-import javax.swing.*;
-
-import DAO.User;
-import net.miginfocom.swing.*;
 
 
 public class FormDetail extends Form {
+    private User user;
+
     public FormDetail() {
         initComponents();
     }
 
     private void thisWindowActivated(WindowEvent e) {
-        // TODO add your code here
+        // TODO: 置组件标题为用户信息
     }
 
     private void btnEditActionPerformed(ActionEvent e) {
@@ -50,21 +52,8 @@ public class FormDetail extends Form {
         // TODO add your code here
     }
 
-    public boolean setDetail(User user) {
-        // 数据库中根据uid获取用户信息
-        tfNickname.setText(user.nickname);
-        lbID.setText(String.valueOf(user.id));
-        tfAge.setText(String.valueOf(user.age));
-        tfSex.setText(String.valueOf(user.sex));
-        tfHome.setText(String.valueOf(user.home));
-        tfBirthday.setText(
-                user.BYear
-                        + "-"
-                        + user.BMonth
-                        + "-"
-                        + user.BDay
-        );
-        return true;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     private void initComponents() {
@@ -104,7 +93,7 @@ public class FormDetail extends Form {
                             "[]"));
 
             //---- lbAvatar ----
-            lbAvatar.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/resource/\u5934\u50cf \u7537\u5b69.png"))));
+            lbAvatar.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/jpg/\u5934\u50cf \u7537\u5b69.png"))));
             lbAvatar.setInheritsPopupMenu(false);
             lbAvatar.setFocusable(false);
             lbAvatar.setDisabledIcon(null);

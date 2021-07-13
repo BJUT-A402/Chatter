@@ -1,16 +1,14 @@
 package ui;
 
 public class Form {
-    public boolean Existing;
     public boolean Showing;
 
 
     public Form() {
-        Existing = true;
         Showing = false;
     }
 
-    public void setShowing(boolean status) {
+    public void show(boolean status) {
         Showing = status;
         Form t = this;
         if (this instanceof FormChat) {
@@ -25,6 +23,8 @@ public class Form {
             ((FormLogin) t).Login.setVisible(status);
         } else if (this instanceof FormTheme) {
             ((FormTheme) t).Theme.setVisible(status);
+        } else if (this instanceof FormRegister) {
+            ((FormRegister) t).Register.setVisible(status);
         }
     }
 }

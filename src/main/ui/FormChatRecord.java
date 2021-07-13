@@ -1,8 +1,7 @@
 package ui;
 
-import java.awt.*;
 import javax.swing.*;
-import javax.swing.GroupLayout;
+import java.awt.*;
 
 
 public class FormChatRecord extends Form {
