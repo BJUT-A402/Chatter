@@ -1,7 +1,9 @@
 package ui;
 
+import chat.Account;
 import chat.CError;
 import chat.Utils;
+import com.kitfox.svg.A;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,11 +36,11 @@ public class FormRegister extends Form {
 
     private void btnRegisterActionPerformed(ActionEvent e) {
         if (cbAccount.isSelected() && cbPassword.isSelected() && cbPassword2.isSelected()) {
-            int errorCode = Utils.validateRegister(Integer.parseInt(ftfAccount.getText()));
+            int errorCode = Account.validateRegister(Integer.parseInt(ftfAccount.getText()));
             if (errorCode != CError.SUCCESS) {
                 CError.error(errorCode);
             } else {
-                if (Utils.register(Integer.parseInt(ftfAccount.getText()), String.valueOf(pwPassword.getPassword())) == CError.SUCCESS) {
+                if (Account.register(Integer.parseInt(ftfAccount.getText()), String.valueOf(pwPassword.getPassword())) == CError.SUCCESS) {
                     JOptionPane.showMessageDialog(null, "注册成功！");
                     FormManager.FR.show(false);
                     FormManager.FL.show(true);

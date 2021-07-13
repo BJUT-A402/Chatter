@@ -39,7 +39,7 @@ public class FormLogin extends Form {
             JOptionPane.showMessageDialog(null, "密码不可为空！", "警告", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int errorCode = Utils.validateLogin(Integer.parseInt(ftfAccount.getText()), String.valueOf(pwPassword.getPassword()));
+        int errorCode = Account.validateLogin(Integer.parseInt(ftfAccount.getText()), String.valueOf(pwPassword.getPassword()));
         if (errorCode != CError.SUCCESS) {
             CError.error(errorCode);
             return;

@@ -17,50 +17,10 @@ import java.util.Enumeration;
 public class Utils {
     public static final String SYSTEM_TEMP_PATH = System.getProperty("java.io.tmpdir");
 
-    // 数据库验证登录
-    public static int validateLogin(int account, String password) {
-        ArrayList<Object> IDs = DAO.search("SELECT ID FROM user", "ID");
-        if (!findID(account, IDs))
-            return CError.ID_NOT_FOUND;
-        else {
-            ArrayList<Object> passwords = DAO.search("SELECT password FROM user where ID='" + account + "'", "password");
-            String pw = (String) passwords.get(0);
-            if (!pw.equals(password)) {
-                return CError.WRONG_PASSWORD;
-            } else {
-                return CError.SUCCESS;
-            }
-        }
-    }
-
-    // 数据库验证注册
-    public static int validateRegister(int account) {
-        ArrayList<Object> IDs = DAO.search("SELECT ID FROM user", "ID");
-        if (findID(account, IDs))
-            return CError.ID_EXISTED;
-        else
-            return CError.SUCCESS;
-    }
-
-    // 在数据库中注册用户
-    public static int register(int ID, String password) {
-        String sql = "INSERT INTO user (ID,password) VALUES (" + ID + ",'" + password + "')";
-        return DAO.executeSQL(sql, DAO.INSERT);
-    }
-
     // 更新user数据库记录中的shop字段
     public static int updateShop(String shopLink, String ID) {
         String sql = "UPDATE user SET shop='" + shopLink + "' where ID='" + ID + "'";
         return DAO.executeSQL(sql, DAO.UPDATE);
-    }
-
-    public static boolean findID(int account, ArrayList<Object> result) {
-        for (Object obj : result) {
-            int uid = (Integer) obj;
-            if (uid == account)
-                return true;
-        }
-        return false;
     }
 
     // 使JTable自动适应列宽

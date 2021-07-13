@@ -1,16 +1,18 @@
 package ui;
 
+import DTO.User;
 import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 
 public class FormFriends extends Form {
+    private ArrayList<User> 
+
     public FormFriends() {
         initComponents();
     }
@@ -49,27 +51,50 @@ public class FormFriends extends Form {
         // TODO add your code here
     }
 
+    private void updateFriendsList() {
+
+        listFriends.setModel(new AbstractListModel<>() {
+            ArrayList<Integer> values = Chatter.curUser.getFriends();
+
+            @Override
+            public int getSize() {
+                return values.size();
+            }
+
+            @Override
+            public String getElementAt(int i) {
+                return String.valueOf(values.get(i));
+            }
+        });
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        this.Friends = new JFrame();
-        this.lbMyFriends = new JLabel();
-        this.spFriends = new JScrollPane();
-        this.listFriends = new JList<>();
-        this.btnAddFriend = new JButton();
-        this.btnMyDetail = new JButton();
-        this.btnChangeTheme = new JButton();
-        this.pmFriends = new JPopupMenu();
-        this.miSendMessage = new JMenuItem();
-        this.miPersonDetail = new JMenuItem();
-        this.miDeleteFriend = new JMenuItem();
+        Friends = new JFrame();
+        lbMyFriends = new JLabel();
+        spFriends = new JScrollPane();
+        listFriends = new JList<>();
+        btnAddFriend = new JButton();
+        btnMyDetail = new JButton();
+        btnChangeTheme = new JButton();
+        pmFriends = new JPopupMenu();
+        miSendMessage = new JMenuItem();
+        miPersonDetail = new JMenuItem();
+        miDeleteFriend = new JMenuItem();
 
         //======== Friends ========
         {
-            this.Friends.setMinimumSize(new Dimension(220, 440));
-            this.Friends.setTitle("\u6e05\u98ce\u98de\u96ea");
-            this.Friends.setResizable(false);
-            this.Friends.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            Container FriendsContentPane = this.Friends.getContentPane();
+            Friends.setMinimumSize(new Dimension(220, 440));
+            Friends.setTitle("\u6e05\u98ce\u98de\u96ea");
+            Friends.setResizable(false);
+            Friends.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            Friends.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowActivated(WindowEvent e) {
+                    updateFriendsList();
+                }
+            });
+            Container FriendsContentPane = Friends.getContentPane();
             FriendsContentPane.setLayout(new MigLayout(
                     "hidemode 3,alignx center",
                     // columns
@@ -80,85 +105,65 @@ public class FormFriends extends Form {
                             "[]"));
 
             //---- lbMyFriends ----
-            this.lbMyFriends.setText("\u6211\u7684\u597d\u53cb");
-            this.lbMyFriends.setFont(new Font("\u9ed1\u4f53", Font.PLAIN, 16));
-            FriendsContentPane.add(this.lbMyFriends, "cell 0 0,gapx 2");
+            lbMyFriends.setText("\u6211\u7684\u597d\u53cb");
+            lbMyFriends.setFont(new Font("\u9ed1\u4f53", Font.PLAIN, 16));
+            FriendsContentPane.add(lbMyFriends, "cell 0 0,gapx 2");
 
             //======== spFriends ========
             {
 
                 //---- listFriends ----
-                this.listFriends.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                this.listFriends.setModel(new AbstractListModel<String>() {
-                    String[] values = {
-                            "廖思源_18071001",
-                            "贾安卓_18071002",
-                            "孙月明_18071003",
-                            "冯剑豪_18071004",
-                            "赵睿_18071024",
-                            "冯嘉伦_18071025"
-                    };
-
-                    @Override
-                    public int getSize() {
-                        return this.values.length;
-                    }
-
-                    @Override
-                    public String getElementAt(int i) {
-                        return this.values[i];
-                    }
-                });
-                this.listFriends.setFocusable(false);
-                this.listFriends.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
-                this.listFriends.addMouseListener(new MouseAdapter() {
+                listFriends.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                listFriends.setFocusable(false);
+                listFriends.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+                listFriends.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         listFriendsMouseClicked(e);
                     }
                 });
-                this.spFriends.setViewportView(this.listFriends);
+                spFriends.setViewportView(listFriends);
             }
-            FriendsContentPane.add(this.spFriends, "cell 0 1,grow,gapx 2 2");
+            FriendsContentPane.add(spFriends, "cell 0 1,grow,gapx 2 2");
 
             //---- btnAddFriend ----
-            this.btnAddFriend.setText("\u6dfb\u52a0\u597d\u53cb");
-            this.btnAddFriend.setFocusable(false);
-            this.btnAddFriend.addActionListener(e -> btnAddFriendActionPerformed(e));
-            FriendsContentPane.add(this.btnAddFriend, "cell 0 2,alignx center,growx 0,width 50");
+            btnAddFriend.setText("\u6dfb\u52a0\u597d\u53cb");
+            btnAddFriend.setFocusable(false);
+            btnAddFriend.addActionListener(e -> btnAddFriendActionPerformed(e));
+            FriendsContentPane.add(btnAddFriend, "cell 0 2,alignx center,growx 0,width 50");
 
             //---- btnMyDetail ----
-            this.btnMyDetail.setText("\u6211\u7684\u8d44\u6599");
-            this.btnMyDetail.setFocusable(false);
-            this.btnMyDetail.addActionListener(e -> btnMyDetailActionPerformed(e));
-            FriendsContentPane.add(this.btnMyDetail, "cell 0 2,alignx center,growx 0,width 50");
+            btnMyDetail.setText("\u6211\u7684\u8d44\u6599");
+            btnMyDetail.setFocusable(false);
+            btnMyDetail.addActionListener(e -> btnMyDetailActionPerformed(e));
+            FriendsContentPane.add(btnMyDetail, "cell 0 2,alignx center,growx 0,width 50");
 
             //---- btnChangeTheme ----
-            this.btnChangeTheme.setText("\u66f4\u6539\u4e3b\u9898");
-            this.btnChangeTheme.setFocusable(false);
-            this.btnChangeTheme.addActionListener(e -> btnChangeThemeActionPerformed(e));
-            FriendsContentPane.add(this.btnChangeTheme, "cell 0 2");
-            this.Friends.setSize(270, 550);
-            this.Friends.setLocationRelativeTo(this.Friends.getOwner());
+            btnChangeTheme.setText("\u66f4\u6539\u4e3b\u9898");
+            btnChangeTheme.setFocusable(false);
+            btnChangeTheme.addActionListener(e -> btnChangeThemeActionPerformed(e));
+            FriendsContentPane.add(btnChangeTheme, "cell 0 2");
+            Friends.setSize(270, 550);
+            Friends.setLocationRelativeTo(Friends.getOwner());
         }
 
         //======== pmFriends ========
         {
 
             //---- miSendMessage ----
-            this.miSendMessage.setText("\u53d1\u9001\u6d88\u606f");
-            this.miSendMessage.addActionListener(e -> miSendMessageActionPerformed(e));
-            this.pmFriends.add(this.miSendMessage);
+            miSendMessage.setText("\u53d1\u9001\u6d88\u606f");
+            miSendMessage.addActionListener(e -> miSendMessageActionPerformed(e));
+            pmFriends.add(miSendMessage);
 
             //---- miPersonDetail ----
-            this.miPersonDetail.setText("\u67e5\u770b\u8d44\u6599");
-            this.miPersonDetail.addActionListener(e -> miPersonDetailActionPerformed(e));
-            this.pmFriends.add(this.miPersonDetail);
+            miPersonDetail.setText("\u67e5\u770b\u8d44\u6599");
+            miPersonDetail.addActionListener(e -> miPersonDetailActionPerformed(e));
+            pmFriends.add(miPersonDetail);
 
             //---- miDeleteFriend ----
-            this.miDeleteFriend.setText("\u5220\u9664\u597d\u53cb");
-            this.miDeleteFriend.addActionListener(e -> miDeleteFriendActionPerformed(e));
-            this.pmFriends.add(this.miDeleteFriend);
+            miDeleteFriend.setText("\u5220\u9664\u597d\u53cb");
+            miDeleteFriend.addActionListener(e -> miDeleteFriendActionPerformed(e));
+            pmFriends.add(miDeleteFriend);
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
