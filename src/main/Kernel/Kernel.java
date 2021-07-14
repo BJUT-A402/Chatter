@@ -68,7 +68,7 @@ class Read extends Thread {
                         ArrayList<User> allUsers = new ArrayList<>();
                         for (String user : ListUser) {
                             int uid = Integer.parseInt(user);
-                            User f = User.getFriend(uid);
+                            User f = User.getUser(uid);
                             allUsers.add(f);
                         }
                         Utils.updateAllUsersList(allUsers);
@@ -87,9 +87,10 @@ class Read extends Thread {
                             String from = message.substring(0, message.indexOf("->"));
                             String msg = message.substring(message.indexOf(":") + 1);
                             int fromID = Integer.parseInt(from);
-                            User fromUser = User.getFriend(fromID);
+                            User fromUser = User.getUser(fromID);
                             fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
-                            FormManager.FC.updateRecords();
+                            if (FormManager.FC.tosend != null)
+                                FormManager.FC.updateRecords();
                             if (fromID != Chatter.curUser.getID())
                                 JOptionPane.showMessageDialog(null, fromUser.getNickname() + "给你发消息了！");
                         } else if (message.charAt(0) == '%') {

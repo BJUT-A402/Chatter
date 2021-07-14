@@ -89,7 +89,7 @@ public class Utils {
         FormFriends form = FormManager.FF;
         form.friends.clear();
         for (Integer friendID : friendsIDs) {
-            User friend = User.getFriend(friendID);
+            User friend = User.getUser(friendID);
             form.friends.add(friend);
         }
         form.listFriends.setModel(new AbstractListModel<>() {
