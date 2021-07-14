@@ -23,7 +23,7 @@ public class Kernel {
     public static boolean connectServer() {
         try {
             // 连接服务器，初始化输入输出接收器
-            server = new Socket(Utils.LOCALHOST_IP, Utils.SERVER_PORT);
+            server = new Socket(Utils.SERVER_IP, Utils.SERVER_PORT);
             input = new BufferedReader(new InputStreamReader(server.getInputStream()));
             output = new PrintWriter(server.getOutputStream(), true);
 
@@ -77,17 +77,21 @@ class Read extends Thread {
                     else {
                         if (message.contains("&")) {
                             String from = message.split("&")[0];
-                            User fromUser = User.getFriend(Integer.parseInt(from));
+                            User fromUser = User.getUser(Integer.parseInt(from));
                             if (JOptionPane.showConfirmDialog(null, "请求添加您为好友，是否添加？", "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-
+                                Account.addFriend(Chatter.curUser, fromUser);
+                                Utils.updateFriendsList();
+                                Kernel.sendMessage("%");
                             }
                         } else if (message.contains("@")) {
                             String from = message.substring(0, message.indexOf("->"));
                             String msg = message.substring(message.indexOf(":") + 1);
                             int fromID = Integer.parseInt(from);
                             User fromUser = User.getFriend(fromID);
-                            fromUser.getRecords().add(fromUser.getNickname() + ":" + message);
+                            fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
                             FormManager.FC.updateRecords();
+                        } else if (message.charAt(0) == '%') {
+                            Utils.updateFriendsList();
                         }
                     }
                 }

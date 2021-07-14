@@ -84,6 +84,7 @@ public class Utils {
     }
 
     public static void updateFriendsList() {
+        Chatter.curUser = User.getUser(Chatter.curUser.getID());
         ArrayList<Integer> friendsIDs = Chatter.curUser.getFriends();
         FormFriends form = FormManager.FF;
         form.friends.clear();

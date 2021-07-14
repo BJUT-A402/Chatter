@@ -65,10 +65,9 @@ public class Server {
     }
 
     // send incoming msg to all Users
-    public void broadcastMessages(String msg, ServerUser userSender) {
+    public void broadcastMessages(String msg) {
         for (ServerUser client : this.clients) {
-            client.getOutStream().println(
-                    userSender.toString() + "<span>: " + msg + "</span>");
+            client.getOutStream().println(msg);
         }
     }
 

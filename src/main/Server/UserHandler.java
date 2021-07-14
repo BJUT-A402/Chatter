@@ -51,13 +51,11 @@ public class UserHandler implements Runnable {
                 String userPrivate = message.substring(1);
                 int userPrivateID = Integer.parseInt(userPrivate);
                 server.sendMessageToUser("", user, userPrivateID, true);
-            } else if (message.charAt(0) == '#') {
-                user.changeColor(message);
-                // update color for all other users
-                this.server.broadcastAllUsers();
+            } else if (message.charAt(0) == '%') {
+                server.broadcastMessages("%");
             } else {
                 // update user list
-                server.broadcastMessages(message, user);
+                server.broadcastMessages(message);
             }
         }
         // end of Thread
