@@ -65,10 +65,9 @@ public class Server {
     }
 
     // send incoming msg to all Users
-    public void broadcastMessages(String msg, ServerUser userSender) {
+    public void broadcastMessages(String msg) {
         for (ServerUser client : this.clients) {
-            client.getOutStream().println(
-                    userSender.toString() + "<span>: " + msg + "</span>");
+            client.getOutStream().println(msg);
         }
     }
 
@@ -80,19 +79,23 @@ public class Server {
     }
 
     // send message to a User (String)
-    public void sendMessageToUser(String msg, ServerUser userSender, int user) {
+    public void sendMessageToUser(String msg, ServerUser userSender, int user, boolean add) {
         boolean find = false;
         for (ServerUser client : this.clients) {
-            if (client.getUserId()==user && client != userSender) {
+            if (client.getUserId() == user && client != userSender) {
                 find = true;
-                userSender.getOutStream().println(userSender + " -> " + client + ": " + msg);
-                client.getOutStream().println(
-                        "(<b>Private</b>)" + userSender + "<span>: " + msg + "</span>");
+                if (add) {
+                    client.getOutStream().println(userSender + "&" + client);
+                } else {
+                    userSender.getOutStream().println(userSender + "->" + client + ":" + msg);
+                    client.getOutStream().println(userSender + "->" + client + ":" + msg);
+                }
             }
         }
-        if (!find) {
+        if (!find && !add) {
             userSender.getOutStream().println(userSender + " -> (<b>no one!</b>): " + msg);
         }
     }
+
 }
 
