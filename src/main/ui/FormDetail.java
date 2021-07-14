@@ -1,7 +1,9 @@
 package ui;
 
 import DTO.User;
+import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
+import DAO.DAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,17 +13,57 @@ import java.util.Objects;
 
 public class FormDetail extends Form {
     private User user;
-
     public FormDetail() {
         initComponents();
     }
 
     private void thisWindowActivated(WindowEvent e) {
         // TODO: 置组件标题为用户信息
+
     }
 
     private void btnEditActionPerformed(ActionEvent e) {
+      if(btnEdit.getText()=="修改"){
+          btnEdit.setText("修改完成");
+          tfAge.setEditable(true);
+          tfAge.setFocusable(true);
+          tfHome.setEditable(true);
+          tfHome.setFocusable(true);
+          tfNickname.setEditable(true);
+          tfNickname.setFocusable(true);
+          tfBirthday.setEditable(true);
+          tfBirthday.setFocusable(true);
+          tfSex.setEditable(true);
+          tfSex.setFocusable(true);
 
+      }
+      else{
+          btnEdit.setText("修改");
+          String Age=tfAge.getText().substring(0, tfAge.getText().indexOf("："));
+          Age=tfAge.getText().substring(Age.length()+1, tfAge.getText().length());
+          String Birthday=tfBirthday.getText().substring(0, tfBirthday.getText().indexOf("："));
+          Birthday=tfBirthday.getText().substring(Birthday.length()+1, tfBirthday.getText().length());
+          String Nickname=tfNickname.getText().substring(0, tfNickname.getText().indexOf("："));
+          Nickname=tfNickname.getText().substring(Nickname.length()+1, tfNickname.getText().length());
+          String Home=tfHome.getText().substring(0, tfHome.getText().indexOf("："));
+          Home=tfHome.getText().substring(Home.length()+1, tfHome.getText().length());
+          String Sex=tfSex.getText().substring(0, tfSex.getText().indexOf("："));
+          Sex=tfSex.getText().substring(Sex.length()+1, tfSex.getText().length());
+          DAO.executeSQL("update user set nickname='"+Nickname+"',home='"+Home+"',"+
+                          "age="+Age+",birthday='"+Birthday+"',sex='"+Sex+"'where id="+user.getID()+""
+                  , DAO.UPDATE);
+          tfAge.setEditable(false);
+          tfAge.setFocusable(false);
+          tfHome.setEditable(false);
+          tfHome.setFocusable(false);
+          tfNickname.setEditable(false);
+          tfNickname.setFocusable(false);
+          tfBirthday.setEditable(false);
+          tfBirthday.setFocusable(false);
+          tfSex.setEditable(false);
+          tfSex.setFocusable(false);
+          Chatter.curUser=User.getUser(user.getID());
+      }
     }
 
     private void lbAvatarMouseClicked(MouseEvent e) {
@@ -54,6 +96,12 @@ public class FormDetail extends Form {
 
     public void setUser(User user) {
         this.user = user;
+        lbID.setText("聊天号："+user.getID());
+        tfNickname.setText("昵称："+user.getNickname());
+        tfAge.setText("年龄："+user.getAge());
+        tfSex.setText("性别："+user.getSex());
+        tfHome.setText("家乡："+user.getHome());
+        tfBirthday.setText("生日："+user.getBirthday());
     }
 
     private void initComponents() {
