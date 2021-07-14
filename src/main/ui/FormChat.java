@@ -22,13 +22,11 @@ public class FormChat extends Form {
     public User tosend;
 
     public void updateRecords() {
-        User user = Chatter.curUser;
-        if (user != null) {
-            tpHisMsg.setText("");
-            for (int i = 0; i < user.getRecords().size(); i++) {
-                tpHisMsg.setText(tpHisMsg.getText() + user.getRecords().get(i) + "\n");
-            }
+        StringBuilder sb = new StringBuilder();
+        for (String str : tosend.getRecords()) {
+            sb.append(str).append("\n");
         }
+        tpHisMsg.setText(sb.toString());
     }
 
     public FormChat() {

@@ -90,7 +90,8 @@ class Read extends Thread {
                             User fromUser = User.getFriend(fromID);
                             fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
                             FormManager.FC.updateRecords();
-                            JOptionPane.showMessageDialog(null, fromUser.getNickname() + "给你发消息了！");
+                            if (fromID != Chatter.curUser.getID())
+                                JOptionPane.showMessageDialog(null, fromUser.getNickname() + "给你发消息了！");
                         } else if (message.charAt(0) == '%') {
                             Utils.updateFriendsList();
                         }
