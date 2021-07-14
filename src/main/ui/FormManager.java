@@ -9,6 +9,7 @@ public class FormManager {
     public static FormLogin FL = new FormLogin();
     public static FormTheme FT = new FormTheme();
     public static FormRegister FR = new FormRegister();
+    public static FormAddFriend FAF = new FormAddFriend();
     private static ArrayList<Form> allForms = new ArrayList<>();
 
     public static void hideAllForms() {
@@ -28,5 +29,6 @@ public class FormManager {
         allForms.add(FD);
         allForms.add(FT);
         allForms.add(FR);
+        allForms.add(FAF);
     }
 }

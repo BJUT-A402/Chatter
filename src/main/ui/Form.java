@@ -23,6 +23,8 @@ public class Form {
             ((FormTheme) t).Theme.setVisible(status);
         } else if (this instanceof FormRegister) {
             ((FormRegister) t).Register.setVisible(status);
+        } else if (this instanceof FormAddFriend) {
+            ((FormAddFriend) t).AddFriend.setVisible(status);
         }
     }
 }

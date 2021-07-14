@@ -44,7 +44,7 @@ public class Account {
         return DAO.executeSQL(sql, DAO.INSERT);
     }
 
-    private static boolean findID(int account, ArrayList<Object> result) {
+    public static boolean findID(int account, ArrayList<Object> result) {
         for (Object obj : result) {
             int uid = (Integer) obj;
             if (uid == account)

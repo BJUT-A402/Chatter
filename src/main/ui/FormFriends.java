@@ -20,7 +20,9 @@ public class FormFriends extends Form {
     }
 
     private void btnAddFriendActionPerformed(ActionEvent e) {
-        // TODO add your code here
+
+        FormManager.FAF.show(true);
+
     }
 
     private void listFriendsMouseClicked(MouseEvent e) {
