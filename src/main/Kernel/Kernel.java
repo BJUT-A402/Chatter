@@ -83,7 +83,7 @@ class Read extends Thread {
                                 Utils.updateFriendsList();
                                 Kernel.sendMessage("%");
                             }
-                        } else if (message.contains("@")) {
+                        } else if (message.contains("->")) {
                             String from = message.substring(0, message.indexOf("->"));
                             String msg = message.substring(message.indexOf(":") + 1);
                             int fromID = Integer.parseInt(from);

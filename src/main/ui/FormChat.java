@@ -44,7 +44,7 @@ public class FormChat extends Form {
 
         if (message.isBlank())
             return;
-        
+
         Kernel.sendMessage("@" + tosend.getID() + ":" + message);
         tosend.getRecords().add(Chatter.curUser.getNickname() + ":" + message);
 
