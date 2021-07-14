@@ -35,19 +35,22 @@ public class UserHandler implements Runnable {
 
             // Gestion des messages private
             if (message.charAt(0) == '@') {
-                if (message.contains(" ")) {
+                if (message.contains(":")) {
                     System.out.println("private msg : " + message);
-                    int firstSpace = message.indexOf(" ");
+                    int firstSpace = message.indexOf(":");
                     String userPrivate = message.substring(1, firstSpace);
                     int userPrivateID = Integer.parseInt(userPrivate);
                     server.sendMessageToUser(
                             message.substring(
-                                    firstSpace + 1, message.length()
-                            ), user, userPrivateID
+                                    firstSpace + 1
+                            ), user, userPrivateID, false
                     );
                 }
-
-                // Gestion du changement
+            } else if (message.charAt(0) == '&') {
+                System.out.println("Add Friend");
+                String userPrivate = message.substring(1);
+                int userPrivateID = Integer.parseInt(userPrivate);
+                server.sendMessageToUser("", user, userPrivateID, true);
             } else if (message.charAt(0) == '#') {
                 user.changeColor(message);
                 // update color for all other users

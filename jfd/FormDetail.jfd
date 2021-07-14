@@ -28,12 +28,10 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "tfNickname"
-				"editable": false
 				"text": "昵称：清风飞雪"
 				"maximumSize": &Dimension0 new java.awt.Dimension( 214, 214 )
 				"preferredSize": &Dimension1 new java.awt.Dimension( 80, 27 )
 				"horizontalAlignment": 0
-				"focusable": false
 				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
 				addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "tfNicknameKeyReleased", true ) )
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tfNicknameActionPerformed", true ) )

@@ -13,7 +13,8 @@ public class User {
     private int age;
     private String sex;
     private ArrayList<Integer> friends;
-    private ArrayList<String> records=new ArrayList<>();
+    private ArrayList<String> records = new ArrayList<>();
+
     public User(int id, String nickname, String home, int age, Date Birthday, String sex, ArrayList<Integer> friends) {
         this.ID = id;
         this.nickname = nickname;
@@ -63,7 +64,8 @@ public class User {
         String[] fs = f.split(",");
         ArrayList<Integer> friends = new ArrayList<Integer>();
         for (String fi : fs) {
-            friends.add(Integer.parseInt(fi));
+            if (!fi.isBlank())
+                friends.add(Integer.parseInt(fi));
         }
         if (userObjs.get(0).size() > 0)
             return new User(
@@ -106,4 +108,5 @@ public class User {
             columnLabels.add("friends");
         return columnLabels;
     }
+
 }

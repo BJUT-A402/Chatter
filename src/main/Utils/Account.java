@@ -53,7 +53,21 @@ public class Account {
         return false;
     }
 
-    public static ArrayList<User> getFriends(ArrayList<Integer> IDs) {
-        return null;
+    public static void addFriend(User ua, User ub) {
+        ArrayList<Integer> friends = ua.getFriends();
+        StringBuilder sa = new StringBuilder();
+        for (Integer friend : friends) {
+            sa.append(friend).append(",");
+        }
+        String sql_u = "UPDATE user SET friends='" + sa + ub.getID() + ",' WHERE ID=" + ua.getID();
+        DAO.executeSQL(sql_u, DAO.UPDATE);
+
+        friends = ub.getFriends();
+        StringBuilder sb = new StringBuilder();
+        for (Integer friend : friends) {
+            sb.append(friend).append(",");
+        }
+        sql_u = "UPDATE user SET friends='" + sb + ua.getID() + ",' WHERE ID=" + ub.getID();
+        DAO.executeSQL(sql_u, DAO.UPDATE);
     }
 }

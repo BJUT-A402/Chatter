@@ -13,18 +13,18 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 public class FormChat extends Form {
-    public   User tosend;
-    public void updateRecords(){
+    public User tosend;
+
+    public void updateRecords() {
         User user = Chatter.curUser;
-        if(user!=null){
+        if (user != null) {
             tpHisMsg.setText("");
-
-            for(int i=0;i<user.getRecords().size();i++){
-               tpHisMsg.setText(tpHisMsg.getText()+user.getRecords().get(i)+"\n");
-
+            for (int i = 0; i < user.getRecords().size(); i++) {
+                tpHisMsg.setText(tpHisMsg.getText() + user.getRecords().get(i) + "\n");
             }
         }
     }
+
     public FormChat() {
         initComponents();
     }
@@ -35,8 +35,10 @@ public class FormChat extends Form {
 
     private void btnSendMsgActionPerformed(ActionEvent e) {
         String message = tpInputMsg.getText().trim();
-        if (!message.isBlank())
-            Kernel.sendMessage("@"+tosend.getID()+": "+message);
+        if (!message.isBlank()) {
+            Kernel.sendMessage("@" + tosend.getID() + ":" + message);
+            tosend.getRecords().add(Chatter.curUser.getNickname() + ":" + message);
+        }
     }
 
     private void btnPicActionPerformed(ActionEvent e) {

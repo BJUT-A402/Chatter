@@ -27,10 +27,22 @@ public class FormFriends extends Form {
 
     private void listFriendsMouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
-            String item = listFriends.getModel().getElementAt(listFriends.getSelectedIndex()).toString();
+            boolean online = false;
+            String item = listFriends.getModel().getElementAt(listFriends.getSelectedIndex());
             String[] temp = item.split("_");
-            if (FormManager.FC.setChat(Integer.parseInt(temp[1]))){
-                FormManager.FC.show(true);}
+            for (int i =0;i<listAllUsers.getModel().getSize();i++) {
+                if (listAllUsers.getModel().getElementAt(i)==item) {
+                    online = true;
+                    break;
+                }
+            }
+            if (online) {
+                if (FormManager.FC.setChat(Integer.parseInt(temp[1]))) {
+                    FormManager.FC.show(true);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null,"对方不在线！");
+            }
         } else if (e.isMetaDown()) {
             int index = listFriends.locationToIndex(e.getPoint());
             listFriends.setSelectedIndex(index);
