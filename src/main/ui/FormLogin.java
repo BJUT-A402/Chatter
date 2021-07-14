@@ -1,7 +1,9 @@
 package ui;
 
 import DTO.User;
-import chat.*;
+import chat.Chatter;
+import Utils.*;
+import Kernel.Kernel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -45,8 +47,10 @@ public class FormLogin extends Form {
             return;
         }
         Chatter.curUser = User.getUser(Integer.parseInt(ftfAccount.getText()));
-        FormManager.FL.show(false);
-        FormManager.FF.show(true);
+        if (Kernel.connectServer()) {
+            FormManager.FL.show(false);
+            FormManager.FF.show(true);
+        }
     }
 
     private void tfAccountActionPerformed(ActionEvent e) {

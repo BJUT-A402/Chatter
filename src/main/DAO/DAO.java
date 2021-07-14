@@ -1,15 +1,16 @@
 package DAO;
 
+import Utils.Utils;
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
-import chat.CError;
+import Utils.CError;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DAO {
-    private static final String IP = "123.57.42.155";
+
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://" + IP + ":3306/Network?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static final String DB_URL = "jdbc:mysql://" + Utils.SERVER_IP + ":3306/Network?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
     public static final int INSERT = 0;
     public static final int UPDATE = 1;
@@ -35,10 +36,7 @@ public class DAO {
             if (operationType == SELECT)
                 stmt.executeQuery(sql);
             else {
-                if (!stmt.execute(sql)){
-                    CError.error(CError.MYSQL_OPERATION_ERROR);
-                    return CError.MYSQL_OPERATION_ERROR;
-                }
+                stmt.execute(sql);
             }
             // 完成后关闭
             stmt.close();

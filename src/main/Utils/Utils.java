@@ -1,6 +1,10 @@
-package chat;
+package Utils;
 
 import DAO.DAO;
+import DTO.User;
+import chat.Chatter;
+import ui.FormFriends;
+import ui.FormManager;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -16,6 +20,9 @@ import java.util.Enumeration;
 
 public class Utils {
     public static final String SYSTEM_TEMP_PATH = System.getProperty("java.io.tmpdir");
+    public static final String LOCALHOST_IP = "127.0.0.1";
+    public static final String SERVER_IP = "123.57.42.155";
+    public static final int SERVER_PORT = 3500;
 
     // 更新user数据库记录中的shop字段
     public static int updateShop(String shopLink, String ID) {
@@ -55,6 +62,46 @@ public class Utils {
         }
         if (sum < myTable.getWidth())
             myTable.getColumnModel().getColumn(0).setWidth(myTable.getWidth() - sum + myTable.getColumnModel().getColumn(0).getWidth());
+    }
+
+    public static void getMessage() {
+
+    }
+
+    public static void updateAllUsersList(ArrayList<User> allUsers) {
+        FormFriends form = FormManager.FF;
+        form.listAllUsers.setModel(new AbstractListModel<>() {
+            @Override
+            public int getSize() {
+                return allUsers.size();
+            }
+
+            @Override
+            public String getElementAt(int i) {
+                return allUsers.get(i).getNickname() + "_" + allUsers.get(i).getID();
+            }
+        });
+    }
+
+    public static void updateFriendsList() {
+        ArrayList<Integer> friendsIDs = Chatter.curUser.getFriends();
+        FormFriends form = FormManager.FF;
+        form.friends.clear();
+        for (Integer friendID : friendsIDs) {
+            User friend = User.getFriend(friendID);
+            form.friends.add(friend);
+        }
+        form.listFriends.setModel(new AbstractListModel<>() {
+            @Override
+            public int getSize() {
+                return form.friends.size();
+            }
+
+            @Override
+            public String getElementAt(int i) {
+                return form.friends.get(i).getNickname() + "_" + form.friends.get(i).getID();
+            }
+        });
     }
 
     // 获取URL文本

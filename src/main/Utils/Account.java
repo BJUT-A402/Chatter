@@ -1,4 +1,4 @@
-package chat;
+package Utils;
 
 import DAO.DAO;
 import DTO.User;
@@ -37,7 +37,10 @@ public class Account {
 
     // 在数据库中注册用户
     public static int register(int ID, String password) {
-        String sql = "INSERT INTO user (ID,password) VALUES (" + ID + ",'" + password + "')";
+        String sql = "INSERT INTO user (ID,password,nickname,home,age,birthday,sex,friends)" +
+                " VALUES (" + ID + ",'" +
+                password + "','" +
+                ID + "','',0,'2000-01-01','','')";
         return DAO.executeSQL(sql, DAO.INSERT);
     }
 
@@ -51,6 +54,6 @@ public class Account {
     }
 
     public static ArrayList<User> getFriends(ArrayList<Integer> IDs) {
-
+        return null;
     }
 }

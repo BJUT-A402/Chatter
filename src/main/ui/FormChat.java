@@ -1,6 +1,7 @@
 package ui;
 
 import DTO.User;
+import Kernel.*;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -20,11 +21,9 @@ public class FormChat extends Form {
     }
 
     private void btnSendMsgActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void btnEmojiActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        String message = tpInputMsg.getText().trim();
+        if (!message.isBlank())
+            Kernel.sendMessage(message);
     }
 
     private void btnPicActionPerformed(ActionEvent e) {

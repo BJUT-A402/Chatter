@@ -1,9 +1,6 @@
 package ui;
 
-import chat.Account;
-import chat.CError;
-import chat.Utils;
-import com.kitfox.svg.A;
+import Utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,16 +18,16 @@ public class FormRegister extends Form {
     }
 
     private void check() {
-        // ç”¨æˆ·åæ£€æŸ¥
+        // ÓÃ»§Ãû¼ì²é
         if (ftfAccount.getText().length() == 0)
             cbAccount.setSelected(false);
         else
             cbAccount.setSelected(Pattern.matches("^[0-9a-zA-Z_]{1,25}$", ftfAccount.getText()));
 
-        // å¯†ç æ£€æŸ¥
+        // ÃÜÂë¼ì²é
         cbPassword.setSelected(String.valueOf(pwPassword.getPassword()).length() >= 6);
 
-        // ç¡®è®¤å¯†ç æ£€æŸ¥
+        // È·ÈÏÃÜÂë¼ì²é
         cbPassword2.setSelected(cbPassword.isSelected() && String.valueOf(pwPassword2.getPassword()).equals(String.valueOf(pwPassword.getPassword())));
     }
 
@@ -41,13 +38,13 @@ public class FormRegister extends Form {
                 CError.error(errorCode);
             } else {
                 if (Account.register(Integer.parseInt(ftfAccount.getText()), String.valueOf(pwPassword.getPassword())) == CError.SUCCESS) {
-                    JOptionPane.showMessageDialog(null, "æ³¨å†ŒæˆåŠŸï¼");
+                    JOptionPane.showMessageDialog(null, "×¢²á³É¹¦£¡");
                     FormManager.FR.show(false);
                     FormManager.FL.show(true);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "æ³¨å†Œå¤±è´¥ï¼Œè¯·æ£€æŸ¥æ³¨å†Œä¿¡æ¯ï¼");
+            JOptionPane.showMessageDialog(null, "×¢²áÊ§°Ü£¬Çë¼ì²é×¢²áĞÅÏ¢£¡");
         }
     }
 
@@ -181,12 +178,12 @@ public class FormRegister extends Form {
             pwPassword.setBounds(85, 105, 269, pwPassword.getPreferredSize().height);
 
             //---- lbAccountTips ----
-            lbAccountTips.setText("ç”¨æˆ·åç”±è‹±æ–‡ã€æ•°å­—å’Œ_ç»„æˆï¼Œé•¿åº¦ä¸è¶…è¿‡25å­—ç¬¦ã€‚");
+            lbAccountTips.setText("ÓÃ»§ÃûÓÉÓ¢ÎÄ¡¢Êı×ÖºÍ_×é³É£¬³¤¶È²»³¬¹ı25×Ö·û¡£");
             RegisterContentPane.add(lbAccountTips);
             lbAccountTips.setBounds(new Rectangle(new Point(85, 70), lbAccountTips.getPreferredSize()));
 
             //---- lbPasswordTips ----
-            lbPasswordTips.setText("é•¿åº¦ä¸è¶…è¿‡20å­—ç¬¦ä¸”ä¸å°‘äº6å­—ç¬¦ã€‚");
+            lbPasswordTips.setText("³¤¶È²»³¬¹ı20×Ö·ûÇÒ²»ÉÙÓÚ6×Ö·û¡£");
             RegisterContentPane.add(lbPasswordTips);
             lbPasswordTips.setBounds(new Rectangle(new Point(85, 140), lbPasswordTips.getPreferredSize()));
 

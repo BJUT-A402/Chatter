@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class FormManager {
     public static FormFriends FF = new FormFriends();
     public static FormChat FC = new FormChat();
-    public static FormChatRecord FCR = new FormChatRecord();
     public static FormDetail FD = new FormDetail();
     public static FormLogin FL = new FormLogin();
     public static FormTheme FT = new FormTheme();
@@ -28,7 +27,6 @@ public class FormManager {
         allForms.add(FL);
         allForms.add(FD);
         allForms.add(FT);
-        allForms.add(FCR);
         allForms.add(FR);
     }
 }

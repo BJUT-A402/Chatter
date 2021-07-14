@@ -9,9 +9,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import static Utils.Utils.updateFriendsList;
+
 
 public class FormFriends extends Form {
-    private ArrayList<User> 
+    public ArrayList<User> friends = new ArrayList<User>();
 
     public FormFriends() {
         initComponents();
@@ -27,6 +29,10 @@ public class FormFriends extends Form {
             String[] temp = item.split("_");
             if (FormManager.FC.setChat(Integer.parseInt(temp[1])))
                 FormManager.FC.show(true);
+        } else if (e.isMetaDown()) {
+            int index = listFriends.locationToIndex(e.getPoint());
+            listFriends.setSelectedIndex(index);
+            pmFriends.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
@@ -51,22 +57,6 @@ public class FormFriends extends Form {
         // TODO add your code here
     }
 
-    private void updateFriendsList() {
-
-        listFriends.setModel(new AbstractListModel<>() {
-            ArrayList<Integer> values = Chatter.curUser.getFriends();
-
-            @Override
-            public int getSize() {
-                return values.size();
-            }
-
-            @Override
-            public String getElementAt(int i) {
-                return String.valueOf(values.get(i));
-            }
-        });
-    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -74,6 +64,9 @@ public class FormFriends extends Form {
         lbMyFriends = new JLabel();
         spFriends = new JScrollPane();
         listFriends = new JList<>();
+        lbAllUsers = new JLabel();
+        spAllusers = new JScrollPane();
+        listAllUsers = new JList();
         btnAddFriend = new JButton();
         btnMyDetail = new JButton();
         btnChangeTheme = new JButton();
@@ -94,7 +87,7 @@ public class FormFriends extends Form {
                     updateFriendsList();
                 }
             });
-            Container FriendsContentPane = Friends.getContentPane();
+            var FriendsContentPane = Friends.getContentPane();
             FriendsContentPane.setLayout(new MigLayout(
                     "hidemode 3,alignx center",
                     // columns
@@ -102,6 +95,8 @@ public class FormFriends extends Form {
                     // rows
                     "[]" +
                             "[grow]" +
+                            "[]" +
+                            "[]" +
                             "[]"));
 
             //---- lbMyFriends ----
@@ -114,6 +109,26 @@ public class FormFriends extends Form {
 
                 //---- listFriends ----
                 listFriends.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                listFriends.setModel(new AbstractListModel<String>() {
+                    String[] values = {
+                            "\u5ed6\u601d\u6e90",
+                            "\u8d3e\u5b89\u5353",
+                            "\u5b59\u6708\u660e",
+                            "\u51af\u5251\u8c6a",
+                            "\u8d75\u777f",
+                            "\u51af\u5609\u4f26"
+                    };
+
+                    @Override
+                    public int getSize() {
+                        return values.length;
+                    }
+
+                    @Override
+                    public String getElementAt(int i) {
+                        return values[i];
+                    }
+                });
                 listFriends.setFocusable(false);
                 listFriends.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
                 listFriends.addMouseListener(new MouseAdapter() {
@@ -126,24 +141,40 @@ public class FormFriends extends Form {
             }
             FriendsContentPane.add(spFriends, "cell 0 1,grow,gapx 2 2");
 
+            //---- lbAllUsers ----
+            lbAllUsers.setText("\u6240\u6709\u7528\u6237\uff08\u670d\u52a1\u5668\uff09");
+            lbAllUsers.setFont(new Font("\u9ed1\u4f53", Font.PLAIN, 16));
+            FriendsContentPane.add(lbAllUsers, "cell 0 2,gapx 2");
+
+            //======== spAllusers ========
+            {
+
+                //---- listAllUsers ----
+                listAllUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                listAllUsers.setFocusable(false);
+                listAllUsers.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+                spAllusers.setViewportView(listAllUsers);
+            }
+            FriendsContentPane.add(spAllusers, "cell 0 3,grow,gapx 2 2");
+
             //---- btnAddFriend ----
             btnAddFriend.setText("\u6dfb\u52a0\u597d\u53cb");
             btnAddFriend.setFocusable(false);
             btnAddFriend.addActionListener(e -> btnAddFriendActionPerformed(e));
-            FriendsContentPane.add(btnAddFriend, "cell 0 2,alignx center,growx 0,width 50");
+            FriendsContentPane.add(btnAddFriend, "cell 0 4,alignx center,growx 0,width 60");
 
             //---- btnMyDetail ----
             btnMyDetail.setText("\u6211\u7684\u8d44\u6599");
             btnMyDetail.setFocusable(false);
             btnMyDetail.addActionListener(e -> btnMyDetailActionPerformed(e));
-            FriendsContentPane.add(btnMyDetail, "cell 0 2,alignx center,growx 0,width 50");
+            FriendsContentPane.add(btnMyDetail, "cell 0 4,alignx center,growx 0,width 60");
 
             //---- btnChangeTheme ----
             btnChangeTheme.setText("\u66f4\u6539\u4e3b\u9898");
             btnChangeTheme.setFocusable(false);
             btnChangeTheme.addActionListener(e -> btnChangeThemeActionPerformed(e));
-            FriendsContentPane.add(btnChangeTheme, "cell 0 2");
-            Friends.setSize(270, 550);
+            FriendsContentPane.add(btnChangeTheme, "cell 0 4");
+            Friends.setSize(260, 550);
             Friends.setLocationRelativeTo(Friends.getOwner());
         }
 
@@ -172,7 +203,10 @@ public class FormFriends extends Form {
     public JFrame Friends;
     private JLabel lbMyFriends;
     private JScrollPane spFriends;
-    private JList<String> listFriends;
+    public JList<String> listFriends;
+    private JLabel lbAllUsers;
+    private JScrollPane spAllusers;
+    public JList listAllUsers;
     private JButton btnAddFriend;
     private JButton btnMyDetail;
     private JButton btnChangeTheme;

@@ -13,8 +13,6 @@ public class Form {
         Form t = this;
         if (this instanceof FormChat) {
             ((FormChat) t).Chat.setVisible(status);
-        } else if (this instanceof FormChatRecord) {
-            ((FormChatRecord) t).ChatRecord.setVisible(status);
         } else if (this instanceof FormDetail) {
             ((FormDetail) t).Detail.setVisible(status);
         } else if (this instanceof FormFriends) {

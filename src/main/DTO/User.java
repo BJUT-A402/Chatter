@@ -53,7 +53,7 @@ public class User {
     }
 
     public static User getUser(int ID) {
-        ArrayList<String> columnLabels = initColumnLabels();
+        ArrayList<String> columnLabels = initColumnLabels(true);
         ArrayList<ArrayList<Object>> userObjs = DAO.search("SELECT ID,nickname,home,age,birthday,sex,friends FROM user where ID=" + ID, columnLabels);
         String f = (String) userObjs.get(6).get(0);
         String[] fs = f.split(",");
@@ -75,7 +75,7 @@ public class User {
     }
 
     public static User getFriend(int ID) {
-        ArrayList<String> columnLabels = initColumnLabels();
+        ArrayList<String> columnLabels = initColumnLabels(false);
         ArrayList<ArrayList<Object>> userObjs = DAO.search("SELECT ID,nickname,home,age,birthday,sex FROM user where ID=" + ID, columnLabels);
         if (userObjs.get(0).size() > 0)
             return new User(
@@ -90,7 +90,7 @@ public class User {
             return null;
     }
 
-    private static ArrayList<String> initColumnLabels() {
+    private static ArrayList<String> initColumnLabels(boolean friends) {
         ArrayList<String> columnLabels = new ArrayList<>();
         columnLabels.add("ID");
         columnLabels.add("nickname");
@@ -98,6 +98,8 @@ public class User {
         columnLabels.add("age");
         columnLabels.add("birthday");
         columnLabels.add("sex");
+        if (friends)
+            columnLabels.add("friends");
         return columnLabels;
     }
 }
