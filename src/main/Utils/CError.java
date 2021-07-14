@@ -7,12 +7,12 @@ import java.util.Map;
 public class CError {
     public static final int SUCCESS = 0;
 
-    // ÓÃ»§²Ù×÷´íÎó
+    // ç”¨æˆ·æ“ä½œé”™è¯¯
     public static final int ID_NOT_FOUND = 10001;
     public static final int WRONG_PASSWORD = 10002;
     public static final int ID_EXISTED = 10003;
 
-    // ÏµÍ³Âß¼­´íÎó --- Ò»ÂÉÒÔERROR½áÎ²
+    // ç³»ç»Ÿé€»è¾‘é”™è¯¯ --- ä¸€å¾‹ä»¥ERRORç»“å°¾
     public static final int CONNECT_ERROR = 20001;
     public static final int OPEN_URL_ERROR = 20002;
     public static final int MYSQL_OPERATION_ERROR = 20003;
@@ -21,18 +21,18 @@ public class CError {
     private static Map<Integer, String> map = new HashMap<>();
 
     private static void initEECError() {
-        map.put(ID_NOT_FOUND, "ÓÃ»§Ãû²»´æÔÚ");
-        map.put(WRONG_PASSWORD, "ÃÜÂë´íÎó");
-        map.put(ID_EXISTED, "ÓÃ»§ÃûÒÑ´æÔÚ");
+        map.put(ID_NOT_FOUND, "ç”¨æˆ·åä¸å­˜åœ¨");
+        map.put(WRONG_PASSWORD, "å¯†ç é”™è¯¯");
+        map.put(ID_EXISTED, "ç”¨æˆ·åå·²å­˜åœ¨");
 
-        map.put(CONNECT_ERROR, "·şÎñÆ÷Á¬½ÓÊ§°Ü£¡");
-        map.put(OPEN_URL_ERROR, "ä¯ÀÀÆ÷´ò¿ªÁ´½ÓÊ§°Ü£¡");
-        map.put(MYSQL_OPERATION_ERROR, "Êı¾İ¿â²Ù×÷Ê§°Ü£¡");
-        map.put(SEND_MESSAGE_ERROR, "·¢ËÍÏûÏ¢Ê§°Ü£¡");
+        map.put(CONNECT_ERROR, "æœåŠ¡å™¨è¿æ¥å¤±è´¥ï¼");
+        map.put(OPEN_URL_ERROR, "æµè§ˆå™¨æ‰“å¼€é“¾æ¥å¤±è´¥ï¼");
+        map.put(MYSQL_OPERATION_ERROR, "æ•°æ®åº“æ“ä½œå¤±è´¥ï¼");
+        map.put(SEND_MESSAGE_ERROR, "å‘é€æ¶ˆæ¯å¤±è´¥ï¼");
     }
 
     /**
-     * ×¢Òâ£º¶ÔÓÚÔÚ¿ÉÄÜµ÷ÓÃ±¾º¯ÊıºóÓĞºóĞø²Ù×÷µÄ·½·¨£¬Ó¦·µ»ØerrorCode£¬ÔÚFormÖĞ×ö·ÖÖ§´¦Àí
+     * æ³¨æ„ï¼šå¯¹äºåœ¨å¯èƒ½è°ƒç”¨æœ¬å‡½æ•°åæœ‰åç»­æ“ä½œçš„æ–¹æ³•ï¼Œåº”è¿”å›errorCodeï¼Œåœ¨Formä¸­åšåˆ†æ”¯å¤„ç†
      */
     public static void error(int errorCode) {
         if (map.isEmpty())
@@ -42,7 +42,7 @@ public class CError {
             System.exit(1);
         }
 
-        JOptionPane.showMessageDialog(null, map.get(errorCode), "´íÎó´úÂë£º" + errorCode, JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, map.get(errorCode), "é”™è¯¯ä»£ç ï¼š" + errorCode, JOptionPane.WARNING_MESSAGE);
     }
 }
 

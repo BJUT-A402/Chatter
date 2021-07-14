@@ -3,6 +3,7 @@ package Kernel;
 import DTO.User;
 import Utils.*;
 import chat.Chatter;
+import ui.FormManager;
 
 import javax.swing.*;
 import java.io.BufferedReader;
@@ -74,7 +75,11 @@ class Read extends Thread {
                     }
                     // 获取信息
                     else {
-                        Utils.getMessage();
+                        message=message.substring(1);
+                        String user =message.split(":")[0];
+                        message=message.substring(message.indexOf(":"));
+                        User.getUser(Integer.parseInt(user)).getRecords().add(message);
+                        FormManager.FC.updateRecords();
                     }
                 }
             } catch (IOException ex) {

@@ -2,6 +2,7 @@ package ui;
 
 import DTO.User;
 import Kernel.*;
+import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -12,6 +13,18 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 public class FormChat extends Form {
+    public   User tosend;
+    public void updateRecords(){
+        User user = Chatter.curUser;
+        if(user!=null){
+            tpHisMsg.setText("");
+
+            for(int i=0;i<user.getRecords().size();i++){
+               tpHisMsg.setText(tpHisMsg.getText()+user.getRecords().get(i)+"\n");
+
+            }
+        }
+    }
     public FormChat() {
         initComponents();
     }
@@ -23,7 +36,7 @@ public class FormChat extends Form {
     private void btnSendMsgActionPerformed(ActionEvent e) {
         String message = tpInputMsg.getText().trim();
         if (!message.isBlank())
-            Kernel.sendMessage(message);
+            Kernel.sendMessage("@"+tosend.getID()+": "+message);
     }
 
     private void btnPicActionPerformed(ActionEvent e) {
@@ -148,10 +161,10 @@ public class FormChat extends Form {
 
     public boolean setChat(int uid) {
         // 数据库中根据uid获取用户信息
-        User user = User.getUser(uid);
-        if (user == null)
+        tosend = User.getUser(uid);
+        if (tosend == null)
             return false;
-        lbNickID.setText(user.getNickname() + "(" + user.getID() + ")");
+        lbNickID.setText(tosend.getNickname() + "(" + tosend.getID() + ")");
         return true;
     }
 

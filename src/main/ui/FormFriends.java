@@ -27,8 +27,8 @@ public class FormFriends extends Form {
         if (e.getClickCount() == 2) {
             String item = listFriends.getModel().getElementAt(listFriends.getSelectedIndex()).toString();
             String[] temp = item.split("_");
-            if (FormManager.FC.setChat(Integer.parseInt(temp[1])))
-                FormManager.FC.show(true);
+            if (FormManager.FC.setChat(Integer.parseInt(temp[1]))){
+                FormManager.FC.show(true);}
         } else if (e.isMetaDown()) {
             int index = listFriends.locationToIndex(e.getPoint());
             listFriends.setSelectedIndex(index);

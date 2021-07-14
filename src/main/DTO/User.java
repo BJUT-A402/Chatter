@@ -13,7 +13,7 @@ public class User {
     private int age;
     private String sex;
     private ArrayList<Integer> friends;
-
+    private ArrayList<String> records=new ArrayList<>();
     public User(int id, String nickname, String home, int age, Date Birthday, String sex, ArrayList<Integer> friends) {
         this.ID = id;
         this.nickname = nickname;
@@ -22,6 +22,10 @@ public class User {
         this.birthday = Birthday;
         this.sex = sex;
         this.friends = friends;
+    }
+
+    public ArrayList<String> getRecords() {
+        return records;
     }
 
     public int getID() {
