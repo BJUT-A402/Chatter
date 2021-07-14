@@ -30,8 +30,9 @@ public class FormFriends extends Form {
             boolean online = false;
             String item = listFriends.getModel().getElementAt(listFriends.getSelectedIndex());
             String[] temp = item.split("_");
-            for (int i =0;i<listAllUsers.getModel().getSize();i++) {
-                if (listAllUsers.getModel().getElementAt(i)==item) {
+            for (int i = 0; i < listAllUsers.getModel().getSize(); i++) {
+                String a = (String) listAllUsers.getModel().getElementAt(i);
+                if (listAllUsers.getModel().getElementAt(i).equals(item)) {
                     online = true;
                     break;
                 }
@@ -41,7 +42,7 @@ public class FormFriends extends Form {
                     FormManager.FC.show(true);
                 }
             } else {
-                JOptionPane.showMessageDialog(null,"对方不在线！");
+                JOptionPane.showMessageDialog(null, "对方不在线！");
             }
         } else if (e.isMetaDown()) {
             int index = listFriends.locationToIndex(e.getPoint());

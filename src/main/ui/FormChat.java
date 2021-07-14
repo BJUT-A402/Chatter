@@ -6,10 +6,16 @@ import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.Objects;
 
 public class FormChat extends Form {
@@ -35,14 +41,70 @@ public class FormChat extends Form {
 
     private void btnSendMsgActionPerformed(ActionEvent e) {
         String message = tpInputMsg.getText().trim();
-        if (!message.isBlank()) {
-            Kernel.sendMessage("@" + tosend.getID() + ":" + message);
-            tosend.getRecords().add(Chatter.curUser.getNickname() + ":" + message);
+
+        if (message.isBlank())
+            return;
+        
+        Kernel.sendMessage("@" + tosend.getID() + ":" + message);
+        tosend.getRecords().add(Chatter.curUser.getNickname() + ":" + message);
+
+        StyledDocument inputSDoc = tpInputMsg.getStyledDocument(); //获取读取的StyledDocument
+        StyledDocument outSDoc = tpHisMsg.getStyledDocument(); //获取欲输出的StyledDocument
+        try {
+            outSDoc.insertString(tpHisMsg.getCaretPosition(), tosend.getID() + ":\n", null);//从光标处插入文字
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
         }
+
+        for (int i = 0; i < inputSDoc.getLength(); i++) { //遍历读取的StyledDocument
+
+            if (inputSDoc.getCharacterElement(i).getName().equals("icon")) { //如果发现是icon元素，那么：
+                Element ele = inputSDoc.getCharacterElement(i);
+                ImageIcon icon = (ImageIcon) StyleConstants.getIcon(ele.getAttributes());
+                icon.setImage(icon.getImage().getScaledInstance(143, 132, Image.SCALE_DEFAULT));//设置（图片）文件的大小
+                tpHisMsg.insertIcon(icon);//插入icon元素
+                try {
+                    outSDoc.insertString(tpHisMsg.getCaretPosition(), "\n", null);//从光标处插入文字
+                } catch (BadLocationException e1) {
+                    e1.printStackTrace();
+                }
+
+            } else {//如果不是icon（可以判断是文字，因为目前只有图片元素插入）
+                try {
+                    String s = inputSDoc.getText(i, 1);
+                    outSDoc.insertString(tpHisMsg.getCaretPosition(), s, null);//从光标处插入文字
+                    if (i == inputSDoc.getLength() - 1)
+                        outSDoc.insertString(tpHisMsg.getCaretPosition(), "\n", null);//从光标处插入文字
+                } catch (BadLocationException e1) {
+                    e1.printStackTrace();
+                }
+            }
+
+        }
+        tpInputMsg.setText("");
+
     }
 
     private void btnPicActionPerformed(ActionEvent e) {
         // TODO add your code here
+
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "JPG & PNG Images", "jpg", "png");//创建这个文件的规范
+        File f = null;
+        chooser.setFileFilter(filter);//加上这个文件规范
+        int result = chooser.showOpenDialog(Chat);
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            f = chooser.getSelectedFile(); //选择的文件 返回给 File
+            //  chooser.getSelectedFile();
+            String pic_path;
+            pic_path = f.getParent() + "\\" + f.getName();//将文件的路径 给变为String
+            ImageIcon i = new ImageIcon(pic_path); //创建一个ImageIcon 并给一个这个文件an的路径
+            i.setImage(i.getImage().getScaledInstance(143, 132, Image.SCALE_DEFAULT));//设置（图片）文件的大小
+            tpInputMsg.insertIcon(i);
+            //tpInputMsg.insertIcon(new ImageIcon(chooser.getSelectedFile().toString()));
+        }
     }
 
     private void btnFileActionPerformed(ActionEvent e) {
