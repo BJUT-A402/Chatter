@@ -12,13 +12,11 @@ import javax.swing.text.Element;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.Objects;
 
-public class FormChat extends Form {
+public class FormChat extends Form implements Runnable {
     public User tosend;
 
     public void updateRecords() {
@@ -33,11 +31,20 @@ public class FormChat extends Form {
         initComponents();
     }
 
-    private void btnMsgRecActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
     private void btnSendMsgActionPerformed(ActionEvent e) {
+        boolean online = false;
+        String item = FormManager.FF.listFriends.getModel().getElementAt(FormManager.FF.listFriends.getSelectedIndex());
+        for (int i = 0; i < FormManager.FF.listAllUsers.getModel().getSize(); i++) {
+            if (FormManager.FF.listAllUsers.getModel().getElementAt(i).equals(item)) {
+                online = true;
+                break;
+            }
+        }
+        if (!online) {
+            JOptionPane.showMessageDialog(null, "对方不在线！");
+            return;
+        }
+
         String message = tpInputMsg.getText().trim();
 
         if (message.isBlank())
@@ -49,7 +56,7 @@ public class FormChat extends Form {
         StyledDocument inputSDoc = tpInputMsg.getStyledDocument(); //获取读取的StyledDocument
         StyledDocument outSDoc = tpHisMsg.getStyledDocument(); //获取欲输出的StyledDocument
         try {
-            outSDoc.insertString(tpHisMsg.getCaretPosition(), tosend.getID() + ":\n", null);//从光标处插入文字
+            outSDoc.insertString(tpHisMsg.getText().length(), tosend.getID() + ":\n", null);//从光标处插入文字
         } catch (BadLocationException e1) {
             e1.printStackTrace();
         }
@@ -109,31 +116,32 @@ public class FormChat extends Form {
         // TODO add your code here
     }
 
-    private void tpInputMsgKeyReleased(KeyEvent e) {
-        // TODO add your code here
-    }
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        this.Chat = new JFrame();
-        this.spHisMsg = new JScrollPane();
-        this.tpHisMsg = new JTextPane();
-        this.lbAvatar = new JLabel();
-        this.lbNickID = new JLabel();
-        this.btnPic = new JButton();
-        this.btnFile = new JButton();
-        this.btnMsgRec = new JButton();
-        this.spInputMsg = new JScrollPane();
-        this.tpInputMsg = new JTextPane();
-        this.btnSendMsg = new JButton();
+        Chat = new JFrame();
+        spHisMsg = new JScrollPane();
+        tpHisMsg = new JTextPane();
+        lbAvatar = new JLabel();
+        lbNickID = new JLabel();
+        btnPic = new JButton();
+        btnFile = new JButton();
+        spInputMsg = new JScrollPane();
+        tpInputMsg = new JTextPane();
+        btnSendMsg = new JButton();
 
         //======== Chat ========
         {
-            this.Chat.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            this.Chat.setMinimumSize(new Dimension(600, 600));
-            this.Chat.setResizable(false);
-            this.Chat.setTitle("聊天");
-            Container ChatContentPane = this.Chat.getContentPane();
+            Chat.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            Chat.setMinimumSize(new Dimension(600, 600));
+            Chat.setResizable(false);
+            Chat.setTitle("聊天");
+            Chat.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+                    showing = false;
+                }
+            });
+            Container ChatContentPane = Chat.getContentPane();
             ChatContentPane.setLayout(new MigLayout(
                     "insets panel,hidemode 3",
                     // columns
@@ -151,72 +159,59 @@ public class FormChat extends Form {
             {
 
                 //---- tpHisMsg ----
-                this.tpHisMsg.setEditable(false);
-                this.tpHisMsg.setText("\u5386\u53f2\u6d88\u606f");
-                this.tpHisMsg.setFocusable(false);
-                this.tpHisMsg.setForeground(Color.blue);
-                this.tpHisMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
-                this.spHisMsg.setViewportView(this.tpHisMsg);
+                tpHisMsg.setEditable(false);
+                tpHisMsg.setText("\u5386\u53f2\u6d88\u606f");
+                tpHisMsg.setFocusable(false);
+                tpHisMsg.setForeground(Color.blue);
+                tpHisMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
+                tpHisMsg.setContentType("text/html");
+                spHisMsg.setViewportView(tpHisMsg);
             }
-            ChatContentPane.add(this.spHisMsg, "span 2 2,grow");
+            ChatContentPane.add(spHisMsg, "span 2 2,grow");
 
             //---- lbAvatar ----
-            this.lbAvatar.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/jpg/\u5934\u50cf \u7537\u5b69 100.png"))));
-            ChatContentPane.add(this.lbAvatar, "cell 2 0,alignx center,growx 0");
+            lbAvatar.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/jpg/\u5934\u50cf \u7537\u5b69 100.png"))));
+            ChatContentPane.add(lbAvatar, "cell 2 0,alignx center,growx 0");
 
             //---- lbNickID ----
-            this.lbNickID.setText("\u8d75\u777f\uff0818071024\uff09");
-            ChatContentPane.add(this.lbNickID, "cell 2 1,align center top,grow 0 0");
+            lbNickID.setText("\u8d75\u777f\uff0818071024\uff09");
+            ChatContentPane.add(lbNickID, "cell 2 1,align center top,grow 0 0");
 
             //---- btnPic ----
-            this.btnPic.setText("\u56fe\u7247");
-            this.btnPic.setFocusPainted(false);
-            this.btnPic.setFocusable(false);
-            this.btnPic.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
-            this.btnPic.addActionListener(e -> btnPicActionPerformed(e));
-            ChatContentPane.add(this.btnPic, "cell 0 2");
+            btnPic.setText("\u56fe\u7247");
+            btnPic.setFocusPainted(false);
+            btnPic.setFocusable(false);
+            btnPic.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
+            btnPic.addActionListener(e -> btnPicActionPerformed(e));
+            ChatContentPane.add(btnPic, "cell 0 2");
 
             //---- btnFile ----
-            this.btnFile.setText("\u6587\u4ef6");
-            this.btnFile.setFocusPainted(false);
-            this.btnFile.setFocusable(false);
-            this.btnFile.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
-            this.btnFile.addActionListener(e -> btnFileActionPerformed(e));
-            ChatContentPane.add(this.btnFile, "cell 0 2");
-
-            //---- btnMsgRec ----
-            this.btnMsgRec.setText("\u804a\u5929\u8bb0\u5f55");
-            this.btnMsgRec.setFocusPainted(false);
-            this.btnMsgRec.setFocusable(false);
-            this.btnMsgRec.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
-            this.btnMsgRec.addActionListener(e -> btnMsgRecActionPerformed(e));
-            ChatContentPane.add(this.btnMsgRec, "cell 1 2,alignx right,growx 0");
+            btnFile.setText("\u6587\u4ef6");
+            btnFile.setFocusPainted(false);
+            btnFile.setFocusable(false);
+            btnFile.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
+            btnFile.addActionListener(e -> btnFileActionPerformed(e));
+            ChatContentPane.add(btnFile, "cell 0 2");
 
             //======== spInputMsg ========
             {
 
                 //---- tpInputMsg ----
-                this.tpInputMsg.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-                this.tpInputMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
-                this.tpInputMsg.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                        tpInputMsgKeyReleased(e);
-                    }
-                });
-                this.spInputMsg.setViewportView(this.tpInputMsg);
+                tpInputMsg.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+                tpInputMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
+                spInputMsg.setViewportView(tpInputMsg);
             }
-            ChatContentPane.add(this.spInputMsg, "cell 0 3 2 1,grow");
+            ChatContentPane.add(spInputMsg, "cell 0 3 2 1,grow");
 
             //---- btnSendMsg ----
-            this.btnSendMsg.setText("\u53d1\u9001");
-            this.btnSendMsg.setActionCommand("SendMessage");
-            this.btnSendMsg.setFocusable(false);
-            this.btnSendMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
-            this.btnSendMsg.addActionListener(e -> btnSendMsgActionPerformed(e));
-            ChatContentPane.add(this.btnSendMsg, "cell 1 4,alignx right");
-            this.Chat.setSize(600, 600);
-            this.Chat.setLocationRelativeTo(null);
+            btnSendMsg.setText("\u53d1\u9001");
+            btnSendMsg.setActionCommand("SendMessage");
+            btnSendMsg.setFocusable(false);
+            btnSendMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
+            btnSendMsg.addActionListener(e -> btnSendMsgActionPerformed(e));
+            ChatContentPane.add(btnSendMsg, "cell 1 4,alignx right");
+            Chat.setSize(600, 600);
+            Chat.setLocationRelativeTo(null);
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
@@ -238,9 +233,13 @@ public class FormChat extends Form {
     private JLabel lbNickID;
     private JButton btnPic;
     private JButton btnFile;
-    private JButton btnMsgRec;
     private JScrollPane spInputMsg;
     private JTextPane tpInputMsg;
     private JButton btnSendMsg;
+
+    @Override
+    public void run() {
+
+    }
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

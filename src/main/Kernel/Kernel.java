@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,8 +25,8 @@ public class Kernel {
         try {
             // 连接服务器，初始化输入输出接收器
             server = new Socket(Utils.SERVER_IP, Utils.SERVER_PORT);
-            input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            output = new PrintWriter(server.getOutputStream(), true);
+            input = new BufferedReader(new InputStreamReader(server.getInputStream(), StandardCharsets.UTF_8));
+            output = new PrintWriter(server.getOutputStream(), true, StandardCharsets.UTF_8);
 
             // 广播自己的ID上线
             output.println(Chatter.curUser.getID());
@@ -49,6 +50,11 @@ public class Kernel {
         } catch (Exception ex) {
             CError.error(CError.SEND_MESSAGE_ERROR);
         }
+    }
+
+    public static void disconnect() {
+        read.interrupt();
+        output.close();
     }
 }
 
@@ -78,7 +84,7 @@ class Read extends Thread {
                         if (message.contains("&")) {
                             String from = message.split("&")[0];
                             User fromUser = User.getUser(Integer.parseInt(from));
-                            if (JOptionPane.showConfirmDialog(null, "请求添加您为好友，是否添加？", "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                            if (JOptionPane.showConfirmDialog(null, fromUser.getNickname() + "请求添加你为好友，是否同意？", "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                                 Account.addFriend(Chatter.curUser, fromUser);
                                 Utils.updateFriendsList();
                                 Kernel.sendMessage("%");
@@ -91,7 +97,7 @@ class Read extends Thread {
                             fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
                             if (FormManager.FC.tosend != null)
                                 FormManager.FC.updateRecords();
-                            if (fromID != Chatter.curUser.getID())
+                            if (fromID != Chatter.curUser.getID() && !FormManager.FC.showing)
                                 JOptionPane.showMessageDialog(null, fromUser.getNickname() + "给你发消息了！");
                         } else if (message.charAt(0) == '%') {
                             Utils.updateFriendsList();

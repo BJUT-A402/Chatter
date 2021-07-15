@@ -3,6 +3,7 @@ package ui;
 import DTO.User;
 import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
+import Kernel.Kernel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,6 @@ public class FormFriends extends Form {
             String item = listFriends.getModel().getElementAt(listFriends.getSelectedIndex());
             String[] temp = item.split("_");
             for (int i = 0; i < listAllUsers.getModel().getSize(); i++) {
-                String a = (String) listAllUsers.getModel().getElementAt(i);
                 if (listAllUsers.getModel().getElementAt(i).equals(item)) {
                     online = true;
                     break;
@@ -39,6 +39,7 @@ public class FormFriends extends Form {
             }
             if (online) {
                 if (FormManager.FC.setChat(Integer.parseInt(temp[1]))) {
+                    FormManager.FC.updateRecords();
                     FormManager.FC.show(true);
                 }
             } else {
@@ -100,6 +101,11 @@ public class FormFriends extends Form {
                 @Override
                 public void windowActivated(WindowEvent e) {
                     updateFriendsList();
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    Kernel.disconnect();
                 }
             });
             var FriendsContentPane = Friends.getContentPane();

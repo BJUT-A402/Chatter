@@ -1,15 +1,17 @@
 package ui;
 
+import java.awt.event.WindowAdapter;
+
 public class Form {
-    public boolean Showing;
+    public boolean showing;
 
 
     public Form() {
-        Showing = false;
+        showing = false;
     }
 
     public void show(boolean status) {
-        Showing = status;
+        showing = status;
         Form t = this;
         if (this instanceof FormChat) {
             ((FormChat) t).Chat.setVisible(status);
