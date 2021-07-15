@@ -85,16 +85,11 @@ class Read extends Thread {
                         for (int i = 0; i < s; i++) {
                             for (int j = 0; j < allUsers.size(); j++) {
                                 if (FormManager.FF.list.get(i).equals(allUsers.get(j).getNickname() + "_" + allUsers.get(j).getID())) {
-                                    FormManager.FF.listFriends.setCellRenderer(new MyRenderer(i, Color.WHITE));
                                     l[i] = true;
                                 }
                             }
                         }
-                        for (int i = 0; i < s; i++) {
-                            if (!l[i]) {
-                                FormManager.FF.listFriends.setCellRenderer(new MyRenderer(i, Color.LIGHT_GRAY));
-                            }
-                        }
+                        FormManager.FF.listFriends.setCellRenderer(new MyRenderer(l, Color.WHITE, Color.LIGHT_GRAY));
                     }
                     // 获取信息
                     else {
