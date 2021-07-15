@@ -1,16 +1,11 @@
 package ui;
 
 import DTO.User;
-import Kernel.*;
-import chat.Chatter;
+import Kernel.Kernel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -34,6 +29,7 @@ public class FormChat extends Form {
     private void tpInputMsgKeyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             sendMessage();
+            tpInputMsg.setText("");
         }
     }
 
@@ -57,47 +53,11 @@ public class FormChat extends Form {
             return;
 
         Kernel.sendMessage("@" + tosend.getID() + ":" + message);
-        tosend.getRecords().add(Chatter.curUser.getNickname() + ":" + message);
     }
 
     private void btnSendMsgActionPerformed(ActionEvent e) {
         sendMessage();
-
-        StyledDocument inputSDoc = tpInputMsg.getStyledDocument(); //获取读取的StyledDocument
-        StyledDocument outSDoc = tpHisMsg.getStyledDocument(); //获取欲输出的StyledDocument
-        try {
-            outSDoc.insertString(tpHisMsg.getText().length(), tosend.getID() + ":\n", null);//从光标处插入文字
-        } catch (BadLocationException e1) {
-            e1.printStackTrace();
-        }
-
-        for (int i = 0; i < inputSDoc.getLength(); i++) { //遍历读取的StyledDocument
-
-            if (inputSDoc.getCharacterElement(i).getName().equals("icon")) { //如果发现是icon元素，那么：
-                Element ele = inputSDoc.getCharacterElement(i);
-                ImageIcon icon = (ImageIcon) StyleConstants.getIcon(ele.getAttributes());
-                icon.setImage(icon.getImage().getScaledInstance(143, 132, Image.SCALE_DEFAULT));//设置（图片）文件的大小
-                tpHisMsg.insertIcon(icon);//插入icon元素
-                try {
-                    outSDoc.insertString(tpHisMsg.getCaretPosition(), "\n", null);//从光标处插入文字
-                } catch (BadLocationException e1) {
-                    e1.printStackTrace();
-                }
-
-            } else {//如果不是icon（可以判断是文字，因为目前只有图片元素插入）
-                try {
-                    String s = inputSDoc.getText(i, 1);
-                    outSDoc.insertString(tpHisMsg.getCaretPosition(), s, null);//从光标处插入文字
-                    if (i == inputSDoc.getLength() - 1)
-                        outSDoc.insertString(tpHisMsg.getCaretPosition(), "\n", null);//从光标处插入文字
-                } catch (BadLocationException e1) {
-                    e1.printStackTrace();
-                }
-            }
-
-        }
         tpInputMsg.setText("");
-
     }
 
     private void btnPicActionPerformed(ActionEvent e) {

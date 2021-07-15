@@ -1,7 +1,5 @@
 package ui;
 
-import java.awt.event.WindowAdapter;
-
 public class Form {
     public boolean showing;
 

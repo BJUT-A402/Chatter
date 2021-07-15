@@ -1,6 +1,7 @@
 package ui;
 
-import Utils.*;
+import Utils.Account;
+import Utils.CError;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,13 +1,13 @@
 package ui;
 
+import DAO.DAO;
 import DTO.User;
 import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
-import DAO.DAO;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.util.Objects;
 
 

@@ -1,9 +1,10 @@
 package ui;
 
 import DTO.User;
-import chat.Chatter;
-import Utils.*;
 import Kernel.Kernel;
+import Utils.Account;
+import Utils.CError;
+import chat.Chatter;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

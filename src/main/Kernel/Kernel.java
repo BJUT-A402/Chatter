@@ -1,7 +1,10 @@
 package Kernel;
 
 import DTO.User;
-import Utils.*;
+import Utils.Account;
+import Utils.CError;
+import Utils.MyRenderer;
+import Utils.Utils;
 import chat.Chatter;
 import ui.FormManager;
 
@@ -107,7 +110,13 @@ class Read extends Thread {
                             String from = message.substring(0, message.indexOf("->"));
                             String msg = message.substring(message.indexOf(":") + 1);
                             int fromID = Integer.parseInt(from);
-                            User fromUser = User.getUser(fromID);
+                            String to = message.substring(message.indexOf("->") + 2, message.indexOf(":"));
+                            int toID = Integer.parseInt(to);
+                            User fromUser;
+                            if (fromID == Chatter.curUser.getID())
+                                fromUser = User.getUser(toID);
+                            else
+                                fromUser = User.getUser(fromID);
                             fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
                             if (FormManager.FC.tosend != null)
                                 FormManager.FC.updateRecords();

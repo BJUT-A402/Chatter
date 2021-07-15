@@ -88,8 +88,8 @@ public class Server {
                     client.getOutStream().println(userSender + "&" + client);
                 } else {
                     if (pic) {
-                        userSender.getOutStream().println(userSender + "->" + client + ":<img src='" + msg + "'>");
-                        client.getOutStream().println(userSender + "->" + client + ":<img src='" + msg + "'>");
+                        userSender.getOutStream().println(userSender + "->" + client + ":<img src=\"http://123.57.42.155:8000/crawler/picture/?pic=" + msg + "\">");
+                        client.getOutStream().println(userSender + "->" + client + ":<img src=\"http://123.57.42.155:8000/crawler/picture/?pic=" + msg + "\">");
                     }
                     else {
                         userSender.getOutStream().println(userSender + "->" + client + ":" + msg);

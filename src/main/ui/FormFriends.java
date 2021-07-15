@@ -1,10 +1,10 @@
 package ui;
 
 import DTO.User;
+import Kernel.Kernel;
 import Utils.Account;
 import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
-import Kernel.Kernel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

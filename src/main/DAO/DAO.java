@@ -1,8 +1,8 @@
 package DAO;
 
+import Utils.CError;
 import Utils.Utils;
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
-import Utils.CError;
 
 import java.sql.*;
 import java.util.ArrayList;
