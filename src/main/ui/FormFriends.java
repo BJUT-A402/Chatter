@@ -37,13 +37,12 @@ public class FormFriends extends Form {
                     break;
                 }
             }
-            if (online) {
-                if (FormManager.FC.setChat(Integer.parseInt(temp[1]))) {
-                    FormManager.FC.updateRecords();
-                    FormManager.FC.show(true);
-                }
-            } else {
+            if (!online) {
                 JOptionPane.showMessageDialog(null, "对方不在线！");
+            }
+            if (FormManager.FC.setChat(Integer.parseInt(temp[1]))) {
+                FormManager.FC.updateRecords();
+                FormManager.FC.show(true);
             }
         } else if (e.isMetaDown()) {
             int index = listFriends.locationToIndex(e.getPoint());

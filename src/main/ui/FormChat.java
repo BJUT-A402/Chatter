@@ -33,7 +33,7 @@ public class FormChat extends Form implements Runnable {
 
     private void btnSendMsgActionPerformed(ActionEvent e) {
         boolean online = false;
-        String item = FormManager.FF.listFriends.getModel().getElementAt(FormManager.FF.listFriends.getSelectedIndex());
+        String item = tosend.getNickname() + "_" + tosend.getID();
         for (int i = 0; i < FormManager.FF.listAllUsers.getModel().getSize(); i++) {
             if (FormManager.FF.listAllUsers.getModel().getElementAt(i).equals(item)) {
                 online = true;
