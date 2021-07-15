@@ -76,6 +76,13 @@ class Read extends Thread {
                             int uid = Integer.parseInt(user);
                             User f = User.getUser(uid);
                             allUsers.add(f);
+                            for (int i = 0; i < FormManager.FF.listFriends.getModel().getSize(); i++) {
+                                if (FormManager.FF.listFriends.getModel().getElementAt(i).equals(f.getNickname() + "_" + f.getID())) {
+                                    String tips = "你的好友 " + f.getNickname() + " 上线了！";
+                                    JOptionPane.showMessageDialog(null, tips);
+                                    break;
+                                }
+                            }
                         }
                         Utils.updateAllUsersList(allUsers);
                     }
@@ -84,7 +91,8 @@ class Read extends Thread {
                         if (message.contains("&")) {
                             String from = message.split("&")[0];
                             User fromUser = User.getUser(Integer.parseInt(from));
-                            if (JOptionPane.showConfirmDialog(null, fromUser.getNickname() + "请求添加你为好友，是否同意？", "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                            String tips = fromUser.getNickname() + "请求添加你为好友，是否同意？";
+                            if (JOptionPane.showConfirmDialog(null, tips, "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                                 Account.addFriend(Chatter.curUser, fromUser);
                                 Utils.updateFriendsList();
                                 Kernel.sendMessage("%");
@@ -97,8 +105,10 @@ class Read extends Thread {
                             fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
                             if (FormManager.FC.tosend != null)
                                 FormManager.FC.updateRecords();
-                            if (fromID != Chatter.curUser.getID() && !FormManager.FC.showing)
-                                JOptionPane.showMessageDialog(null, fromUser.getNickname() + "给你发消息了！");
+                            if (fromID != Chatter.curUser.getID() && !FormManager.FC.showing) {
+                                String tips = fromUser.getNickname() + "给你发消息了！";
+                                JOptionPane.showMessageDialog(null, tips);
+                            }
                         } else if (message.charAt(0) == '%') {
                             Utils.updateFriendsList();
                         }
