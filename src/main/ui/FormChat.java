@@ -108,15 +108,8 @@ public class FormChat extends Form {
         chooser.setFileFilter(filter);//加上这个文件规范
         int result = chooser.showOpenDialog(Chat);
         if (result == JFileChooser.APPROVE_OPTION) {
-
             f = chooser.getSelectedFile(); //选择的文件 返回给 File
-            //  chooser.getSelectedFile();
-            String pic_path;
-            pic_path = f.getParent() + "\\" + f.getName();//将文件的路径 给变为String
-            ImageIcon i = new ImageIcon(pic_path); //创建一个ImageIcon 并给一个这个文件an的路径
-            i.setImage(i.getImage().getScaledInstance(143, 132, Image.SCALE_DEFAULT));//设置（图片）文件的大小
-            tpInputMsg.insertIcon(i);
-            //tpInputMsg.insertIcon(new ImageIcon(chooser.getSelectedFile().toString()));
+            Kernel.sendMessage("@<" + tosend.getID() + ":" + f.getName());
         }
     }
 
