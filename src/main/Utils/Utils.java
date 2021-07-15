@@ -108,19 +108,6 @@ public class Utils {
         });
     }
 
-    public static void updateFriendsList(int a) {
-        Chatter.curUser = User.getUser(Chatter.curUser.getID());
-        ArrayList<Integer> friendsIDs = Chatter.curUser.getFriends();
-        FormFriends form = FormManager.FF;
-        form.list.clear();
-        form.friends.clear();
-        for (Integer friendID : friendsIDs) {
-            User friend = User.getUser(friendID);
-            form.friends.add(friend);
-            form.list.add(friend.getNickname() + "_" + friend.getID());
-        }
-    }
-
     // 获取URL文本
     public static String getStrByUrl(String urlStr) {
         String res = null;

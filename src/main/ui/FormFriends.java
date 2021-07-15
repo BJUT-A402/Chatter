@@ -47,6 +47,7 @@ public class FormFriends extends Form {
         int uid = Integer.parseInt(listFriends.getSelectedValue().split("_")[1]);
         User u = User.getUser(uid);
         Account.deleteFriend(Chatter.curUser, u);
+        updateFriendsList();
         Kernel.sendMessage("%");
     }
 
@@ -109,7 +110,6 @@ public class FormFriends extends Form {
                 @Override
                 public void windowActivated(WindowEvent e) {
                     Friends.setTitle(Chatter.curUser.getNickname());
-                    updateFriendsList();
                 }
 
                 @Override

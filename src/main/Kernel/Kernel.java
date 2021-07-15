@@ -79,7 +79,7 @@ class Read extends Thread {
                             allUsers.add(f);
                         }
                         Utils.updateAllUsersList(allUsers);
-                        Utils.updateFriendsList(0);
+                        Utils.updateFriendsList();
                         int s = FormManager.FF.list.size();
                         boolean[] l = new boolean[s];
                         for (int i = 0; i < s; i++) {
@@ -90,7 +90,7 @@ class Read extends Thread {
                                 }
                             }
                         }
-                        for (int i = 0; i < l.length; i++) {
+                        for (int i = 0; i < s; i++) {
                             if (!l[i]) {
                                 FormManager.FF.listFriends.setCellRenderer(new MyRenderer(i, Color.LIGHT_GRAY));
                             }
@@ -104,6 +104,7 @@ class Read extends Thread {
                             String tips = fromUser.getNickname() + "请求添加你为好友，是否同意？";
                             if (JOptionPane.showConfirmDialog(null, tips, "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                                 Account.addFriend(Chatter.curUser, fromUser);
+                                Chatter.curUser = User.getUser(Chatter.curUser.getID());
                                 Utils.updateFriendsList();
                                 Kernel.sendMessage("%");
                             }

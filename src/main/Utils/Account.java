@@ -87,7 +87,7 @@ public class Account {
             if (friend != ua.getID())
                 sb.append(friend).append(",");
         }
-        sql_u = "UPDATE user SET friends='" + sb + ",' WHERE ID=" + ub.getID();
+        sql_u = "UPDATE user SET friends='" + sb + "' WHERE ID=" + ub.getID();
         DAO.executeSQL(sql_u, DAO.UPDATE);
     }
 }
