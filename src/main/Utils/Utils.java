@@ -9,6 +9,7 @@ import ui.FormManager;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,22 +88,37 @@ public class Utils {
         Chatter.curUser = User.getUser(Chatter.curUser.getID());
         ArrayList<Integer> friendsIDs = Chatter.curUser.getFriends();
         FormFriends form = FormManager.FF;
+        form.list.clear();
         form.friends.clear();
         for (Integer friendID : friendsIDs) {
             User friend = User.getUser(friendID);
             form.friends.add(friend);
+            form.list.add(friend.getNickname() + "_" + friend.getID());
         }
         form.listFriends.setModel(new AbstractListModel<>() {
             @Override
             public int getSize() {
-                return form.friends.size();
+                return form.list.size();
             }
 
             @Override
             public String getElementAt(int i) {
-                return form.friends.get(i).getNickname() + "_" + form.friends.get(i).getID();
+                return form.list.get(i);
             }
         });
+    }
+
+    public static void updateFriendsList(int a) {
+        Chatter.curUser = User.getUser(Chatter.curUser.getID());
+        ArrayList<Integer> friendsIDs = Chatter.curUser.getFriends();
+        FormFriends form = FormManager.FF;
+        form.list.clear();
+        form.friends.clear();
+        for (Integer friendID : friendsIDs) {
+            User friend = User.getUser(friendID);
+            form.friends.add(friend);
+            form.list.add(friend.getNickname() + "_" + friend.getID());
+        }
     }
 
     // 获取URL文本
@@ -144,4 +160,6 @@ public class Utils {
         result = result.replace(":", "：");
         return result;
     }
+
 }
+

@@ -70,4 +70,24 @@ public class Account {
         sql_u = "UPDATE user SET friends='" + sb + ua.getID() + ",' WHERE ID=" + ub.getID();
         DAO.executeSQL(sql_u, DAO.UPDATE);
     }
+
+    public static void deleteFriend(User ua, User ub) {
+        ArrayList<Integer> friends = ua.getFriends();
+        StringBuilder sa = new StringBuilder();
+        for (Integer friend : friends) {
+            if (friend != ub.getID())
+                sa.append(friend).append(",");
+        }
+        String sql_u = "UPDATE user SET friends='" + sa + "' WHERE ID=" + ua.getID();
+        DAO.executeSQL(sql_u, DAO.UPDATE);
+
+        friends = ub.getFriends();
+        StringBuilder sb = new StringBuilder();
+        for (Integer friend : friends) {
+            if (friend != ua.getID())
+                sb.append(friend).append(",");
+        }
+        sql_u = "UPDATE user SET friends='" + sb + ",' WHERE ID=" + ub.getID();
+        DAO.executeSQL(sql_u, DAO.UPDATE);
+    }
 }

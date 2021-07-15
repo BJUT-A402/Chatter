@@ -22,7 +22,7 @@ public class FormLogin extends Form {
         initComponents();
     }
 
-    private void pwPasswordKeyTyped(KeyEvent e) {
+    private void pwPasswordKeyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             login();
         }
@@ -56,10 +56,6 @@ public class FormLogin extends Form {
 
     private void btnLoginActionPerformed(ActionEvent e) {
         login();
-    }
-
-    private void tfAccountActionPerformed(ActionEvent e) {
-        // TODO add your code here
     }
 
     private void rbtnSellerStateChanged(ChangeEvent e) {
@@ -130,8 +126,8 @@ public class FormLogin extends Form {
 
             pwPassword.addKeyListener(new KeyAdapter() {
                 @Override
-                public void keyTyped(KeyEvent e) {
-                    pwPasswordKeyTyped(e);
+                public void keyReleased(KeyEvent e) {
+                    pwPasswordKeyReleased(e);
                 }
             });
 

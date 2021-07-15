@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import net.miginfocom.swing.*;
 /*
  * Created by JFormDesigner on Wed Jul 14 16:10:41 CST 2021
@@ -38,6 +39,18 @@ public class FormFriends  {
 	}
 
 	private void miDeleteFriendActionPerformed(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void listFriendsFocusLost(FocusEvent e) {
+		// TODO add your code here
+	}
+
+	private void listAllUsersFocusLost(FocusEvent e) {
+		// TODO add your code here
+	}
+
+	private void listAllUsersValueChanged(ListSelectionEvent e) {
 		// TODO add your code here
 	}
 
@@ -108,6 +121,12 @@ public class FormFriends  {
 						listFriendsMouseClicked(e);
 					}
 				});
+				this.listFriends.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusLost(FocusEvent e) {
+						listFriendsFocusLost(e);
+					}
+				});
 				this.spFriends.setViewportView(this.listFriends);
 			}
 			FriendsContentPane.add(this.spFriends, "cell 0 1,grow,gapx 2 2");
@@ -124,6 +143,7 @@ public class FormFriends  {
 				this.listAllUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				this.listAllUsers.setFocusable(false);
 				this.listAllUsers.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+				this.listAllUsers.addListSelectionListener(e -> listAllUsersValueChanged(e));
 				this.spAllusers.setViewportView(this.listAllUsers);
 			}
 			FriendsContentPane.add(this.spAllusers, "cell 0 3,grow,gapx 2 2");

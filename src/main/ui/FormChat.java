@@ -16,7 +16,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.util.Objects;
 
-public class FormChat extends Form implements Runnable {
+public class FormChat extends Form {
     public User tosend;
 
     public void updateRecords() {
@@ -31,7 +31,7 @@ public class FormChat extends Form implements Runnable {
         initComponents();
     }
 
-    private void tpInputMsgKeyTyped(KeyEvent e) {
+    private void tpInputMsgKeyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             sendMessage();
         }
@@ -101,8 +101,6 @@ public class FormChat extends Form implements Runnable {
     }
 
     private void btnPicActionPerformed(ActionEvent e) {
-        // TODO add your code here
-
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "JPG & PNG Images", "jpg", "png");//创建这个文件的规范
@@ -123,7 +121,7 @@ public class FormChat extends Form implements Runnable {
     }
 
     private void btnFileActionPerformed(ActionEvent e) {
-        // TODO add your code here
+
     }
 
     private void initComponents() {
@@ -149,6 +147,11 @@ public class FormChat extends Form implements Runnable {
                 @Override
                 public void windowDeactivated(WindowEvent e) {
                     showing = false;
+                }
+
+                @Override
+                public void windowActivated(WindowEvent e) {
+                    showing = true;
                 }
             });
             Container ChatContentPane = Chat.getContentPane();
@@ -178,8 +181,8 @@ public class FormChat extends Form implements Runnable {
                 spHisMsg.setViewportView(tpHisMsg);
                 tpInputMsg.addKeyListener(new KeyAdapter() {
                     @Override
-                    public void keyTyped(KeyEvent e) {
-                        tpInputMsgKeyTyped(e);
+                    public void keyReleased(KeyEvent e) {
+                        tpInputMsgKeyReleased(e);
                     }
                 });
             }
@@ -253,9 +256,5 @@ public class FormChat extends Form implements Runnable {
     private JTextPane tpInputMsg;
     private JButton btnSendMsg;
 
-    @Override
-    public void run() {
-
-    }
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

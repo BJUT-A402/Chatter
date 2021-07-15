@@ -6,6 +6,7 @@ import chat.Chatter;
 import ui.FormManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,15 +77,24 @@ class Read extends Thread {
                             int uid = Integer.parseInt(user);
                             User f = User.getUser(uid);
                             allUsers.add(f);
-                            for (int i = 0; i < FormManager.FF.listFriends.getModel().getSize(); i++) {
-                                if (FormManager.FF.listFriends.getModel().getElementAt(i).equals(f.getNickname() + "_" + f.getID())) {
-                                    String tips = "你的好友 " + f.getNickname() + " 上线了！";
-                                    JOptionPane.showMessageDialog(null, tips);
-                                    break;
+                        }
+                        Utils.updateAllUsersList(allUsers);
+                        Utils.updateFriendsList(0);
+                        int s = FormManager.FF.list.size();
+                        boolean[] l = new boolean[s];
+                        for (int i = 0; i < s; i++) {
+                            for (int j = 0; j < allUsers.size(); j++) {
+                                if (FormManager.FF.list.get(i).equals(allUsers.get(j).getNickname() + "_" + allUsers.get(j).getID())) {
+                                    FormManager.FF.listFriends.setCellRenderer(new MyRenderer(i, Color.WHITE));
+                                    l[i] = true;
                                 }
                             }
                         }
-                        Utils.updateAllUsersList(allUsers);
+                        for (int i = 0; i < l.length; i++) {
+                            if (!l[i]) {
+                                FormManager.FF.listFriends.setCellRenderer(new MyRenderer(i, Color.LIGHT_GRAY));
+                            }
+                        }
                     }
                     // 获取信息
                     else {

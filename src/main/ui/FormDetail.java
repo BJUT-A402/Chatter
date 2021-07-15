@@ -18,11 +18,6 @@ public class FormDetail extends Form {
         initComponents();
     }
 
-    private void thisWindowActivated(WindowEvent e) {
-        // TODO: 置组件标题为用户信息
-
-    }
-
     private void btnEditActionPerformed(ActionEvent e) {
         if (btnEdit.getText().equals("修改")) {
             btnEdit.setText("修改完成");
@@ -69,34 +64,6 @@ public class FormDetail extends Form {
         }
     }
 
-    private void lbAvatarMouseClicked(MouseEvent e) {
-        // TODO add your code here
-    }
-
-    private void tfNicknameKeyReleased(KeyEvent e) {
-        // TODO add your code here
-    }
-
-    private void tfNicknameActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void tfAgeKeyReleased(KeyEvent e) {
-        // TODO add your code here
-    }
-
-    private void tfAgeActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void tfHomeKeyReleased(KeyEvent e) {
-        // TODO add your code here
-    }
-
-    private void tfHomeActionPerformed(ActionEvent e) {
-        // TODO add your code here
-    }
-
     public void setUser(User user) {
         this.user = user;
         lbID.setText("聊天号：" + user.getID());
@@ -124,12 +91,6 @@ public class FormDetail extends Form {
             Detail.setResizable(false);
             Detail.setTitle("\u4e2a\u4eba\u4fe1\u606f");
             Detail.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            Detail.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowActivated(WindowEvent e) {
-                    thisWindowActivated(e);
-                }
-            });
             Container DetailContentPane = Detail.getContentPane();
             DetailContentPane.setLayout(new MigLayout(
                     "fill,hidemode 3",
@@ -148,12 +109,6 @@ public class FormDetail extends Form {
             lbAvatar.setInheritsPopupMenu(false);
             lbAvatar.setFocusable(false);
             lbAvatar.setDisabledIcon(null);
-            lbAvatar.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    lbAvatarMouseClicked(e);
-                }
-            });
             DetailContentPane.add(lbAvatar, "cell 0 0 1 2,align center center,grow 0 0");
 
             //---- tfNickname ----
@@ -164,13 +119,6 @@ public class FormDetail extends Form {
             tfNickname.setHorizontalAlignment(SwingConstants.CENTER);
             tfNickname.setFocusable(false);
             tfNickname.setBorder(null);
-            tfNickname.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    tfNicknameKeyReleased(e);
-                }
-            });
-            tfNickname.addActionListener(e -> tfNicknameActionPerformed(e));
             DetailContentPane.add(tfNickname, "cell 1 0");
 
             //---- lbID ----
@@ -186,14 +134,6 @@ public class FormDetail extends Form {
             tfAge.setHorizontalAlignment(SwingConstants.CENTER);
             tfAge.setFocusable(false);
             tfAge.setBorder(null);
-            tfAge.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    tfNicknameKeyReleased(e);
-                    tfAgeKeyReleased(e);
-                }
-            });
-            tfAge.addActionListener(e -> tfAgeActionPerformed(e));
             DetailContentPane.add(tfAge, "cell 1 1");
 
             //---- tfSex ----
@@ -204,13 +144,6 @@ public class FormDetail extends Form {
             tfSex.setHorizontalAlignment(SwingConstants.CENTER);
             tfSex.setFocusable(false);
             tfSex.setBorder(null);
-            tfSex.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    tfNicknameKeyReleased(e);
-                    tfAgeKeyReleased(e);
-                }
-            });
             DetailContentPane.add(tfSex, "cell 2 1");
 
             //---- btnEdit ----
@@ -227,15 +160,6 @@ public class FormDetail extends Form {
             tfHome.setHorizontalAlignment(SwingConstants.CENTER);
             tfHome.setFocusable(false);
             tfHome.setBorder(null);
-            tfHome.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    tfNicknameKeyReleased(e);
-                    tfAgeKeyReleased(e);
-                    tfHomeKeyReleased(e);
-                }
-            });
-            tfHome.addActionListener(e -> tfHomeActionPerformed(e));
             DetailContentPane.add(tfHome, "cell 1 2");
 
             //---- tfAge2 ----
@@ -246,13 +170,6 @@ public class FormDetail extends Form {
             tfBirthday.setHorizontalAlignment(SwingConstants.CENTER);
             tfBirthday.setFocusable(false);
             tfBirthday.setBorder(null);
-            tfBirthday.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    tfNicknameKeyReleased(e);
-                    tfAgeKeyReleased(e);
-                }
-            });
             DetailContentPane.add(tfBirthday, "cell 2 2");
             Detail.setSize(640, 480);
             Detail.setLocationRelativeTo(null);

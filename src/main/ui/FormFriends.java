@@ -1,11 +1,13 @@
 package ui;
 
 import DTO.User;
+import Utils.Account;
 import chat.Chatter;
 import net.miginfocom.swing.MigLayout;
 import Kernel.Kernel;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -15,35 +17,19 @@ import static Utils.Utils.updateFriendsList;
 
 public class FormFriends extends Form {
     public ArrayList<User> friends = new ArrayList<User>();
+    public ArrayList<String> list = new ArrayList<>();
 
     public FormFriends() {
         initComponents();
     }
 
     private void btnAddFriendActionPerformed(ActionEvent e) {
-
         FormManager.FAF.show(true);
-
     }
 
     private void listFriendsMouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
-            boolean online = false;
-            String item = listFriends.getModel().getElementAt(listFriends.getSelectedIndex());
-            String[] temp = item.split("_");
-            for (int i = 0; i < listAllUsers.getModel().getSize(); i++) {
-                if (listAllUsers.getModel().getElementAt(i).equals(item)) {
-                    online = true;
-                    break;
-                }
-            }
-            if (!online) {
-                JOptionPane.showMessageDialog(null, "对方不在线！");
-            }
-            if (FormManager.FC.setChat(Integer.parseInt(temp[1]))) {
-                FormManager.FC.updateRecords();
-                FormManager.FC.show(true);
-            }
+            sendMessageW();
         } else if (e.isMetaDown()) {
             int index = listFriends.locationToIndex(e.getPoint());
             listFriends.setSelectedIndex(index);
@@ -52,11 +38,16 @@ public class FormFriends extends Form {
     }
 
     private void miPersonDetailActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        User u = User.getUser(Integer.parseInt(listFriends.getSelectedValue().split("_")[1]));
+        FormManager.FD.setUser(u);
+        FormManager.FD.show(true);
     }
 
     private void miDeleteFriendActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        int uid = Integer.parseInt(listFriends.getSelectedValue().split("_")[1]);
+        User u = User.getUser(uid);
+        Account.deleteFriend(Chatter.curUser, u);
+        Kernel.sendMessage("%");
     }
 
     private void btnMyDetailActionPerformed(ActionEvent e) {
@@ -69,9 +60,27 @@ public class FormFriends extends Form {
     }
 
     private void miSendMessageActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        sendMessageW();
     }
 
+    private void sendMessageW() {
+        boolean online = false;
+        String item = listFriends.getSelectedValue();
+        String[] temp = item.split("_");
+        for (int i = 0; i < listAllUsers.getModel().getSize(); i++) {
+            if (listAllUsers.getModel().getElementAt(i).equals(item)) {
+                online = true;
+                break;
+            }
+        }
+        if (!online) {
+            JOptionPane.showMessageDialog(null, "对方不在线！");
+        }
+        if (FormManager.FC.setChat(Integer.parseInt(temp[1]))) {
+            FormManager.FC.updateRecords();
+            FormManager.FC.show(true);
+        }
+    }
 
 
     private void initComponents() {
@@ -130,32 +139,18 @@ public class FormFriends extends Form {
 
                 //---- listFriends ----
                 listFriends.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                listFriends.setModel(new AbstractListModel<String>() {
-                    String[] values = {
-                            "\u5ed6\u601d\u6e90",
-                            "\u8d3e\u5b89\u5353",
-                            "\u5b59\u6708\u660e",
-                            "\u51af\u5251\u8c6a",
-                            "\u8d75\u777f",
-                            "\u51af\u5609\u4f26"
-                    };
-
-                    @Override
-                    public int getSize() {
-                        return values.length;
-                    }
-
-                    @Override
-                    public String getElementAt(int i) {
-                        return values[i];
-                    }
-                });
                 listFriends.setFocusable(false);
                 listFriends.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
                 listFriends.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         listFriendsMouseClicked(e);
+                    }
+                });
+                listFriends.addFocusListener(new FocusAdapter() {
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        listFriendsFocusLost(e);
                     }
                 });
                 spFriends.setViewportView(listFriends);
@@ -174,6 +169,7 @@ public class FormFriends extends Form {
                 listAllUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 listAllUsers.setFocusable(false);
                 listAllUsers.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+                listAllUsers.addListSelectionListener(e -> listAllUsersValueChanged(e));
                 spAllusers.setViewportView(listAllUsers);
             }
             FriendsContentPane.add(spAllusers, "cell 0 3,grow,gapx 2 2");
@@ -218,6 +214,14 @@ public class FormFriends extends Form {
             pmFriends.add(miDeleteFriend);
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
+    }
+
+    private void listAllUsersValueChanged(ListSelectionEvent e) {
+        listFriends.setSelectedIndices(new int []{});
+    }
+
+    private void listFriendsFocusLost(FocusEvent e) {
+        listFriends.setSelectedIndices(new int []{});
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
