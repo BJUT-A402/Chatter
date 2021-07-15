@@ -6,6 +6,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class User {
+    public static ArrayList<User> users = new ArrayList<>();
+
     private int ID;
     private String nickname;
     private String home;
@@ -58,6 +60,11 @@ public class User {
     }
 
     public static User getUser(int ID) {
+        for (User u : users) {
+            if (u.getID() == ID)
+                return u;
+        }
+        User nu;
         ArrayList<String> columnLabels = initColumnLabels(true);
         ArrayList<ArrayList<Object>> userObjs = DAO.search("SELECT ID,nickname,home,age,birthday,sex,friends FROM user where ID=" + ID, columnLabels);
         String f = (String) userObjs.get(6).get(0);
@@ -67,8 +74,8 @@ public class User {
             if (!fi.isBlank())
                 friends.add(Integer.parseInt(fi));
         }
-        if (userObjs.get(0).size() > 0)
-            return new User(
+        if (userObjs.get(0).size() > 0) {
+            nu = new User(
                     (Integer) userObjs.get(0).get(0),
                     (String) userObjs.get(1).get(0),
                     (String) userObjs.get(2).get(0),
@@ -76,27 +83,14 @@ public class User {
                     (Date) userObjs.get(4).get(0),
                     (String) userObjs.get(5).get(0),
                     friends);
+            users.add(nu);
+            return nu;
+        }
         else
             return null;
     }
 
-    public static User getFriend(int ID) {
-        ArrayList<String> columnLabels = initColumnLabels(false);
-        ArrayList<ArrayList<Object>> userObjs = DAO.search("SELECT ID,nickname,home,age,birthday,sex FROM user where ID=" + ID, columnLabels);
-        if (userObjs.get(0).size() > 0)
-            return new User(
-                    (Integer) userObjs.get(0).get(0),
-                    (String) userObjs.get(1).get(0),
-                    (String) userObjs.get(2).get(0),
-                    (Integer) userObjs.get(3).get(0),
-                    (Date) userObjs.get(4).get(0),
-                    (String) userObjs.get(5).get(0),
-                    null);
-        else
-            return null;
-    }
-
-    private static ArrayList<String> initColumnLabels(boolean friends) {
+   private static ArrayList<String> initColumnLabels(boolean friends) {
         ArrayList<String> columnLabels = new ArrayList<>();
         columnLabels.add("ID");
         columnLabels.add("nickname");

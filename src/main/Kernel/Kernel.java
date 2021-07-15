@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,8 +25,8 @@ public class Kernel {
         try {
             // 连接服务器，初始化输入输出接收器
             server = new Socket(Utils.SERVER_IP, Utils.SERVER_PORT);
-            input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-            output = new PrintWriter(server.getOutputStream(), true);
+            input = new BufferedReader(new InputStreamReader(server.getInputStream(), StandardCharsets.UTF_8));
+            output = new PrintWriter(server.getOutputStream(), true, StandardCharsets.UTF_8);
 
             // 广播自己的ID上线
             output.println(Chatter.curUser.getID());
@@ -50,6 +51,11 @@ public class Kernel {
             CError.error(CError.SEND_MESSAGE_ERROR);
         }
     }
+
+    public static void disconnect() {
+        read.interrupt();
+        output.close();
+    }
 }
 
 class Read extends Thread {
@@ -68,8 +74,15 @@ class Read extends Thread {
                         ArrayList<User> allUsers = new ArrayList<>();
                         for (String user : ListUser) {
                             int uid = Integer.parseInt(user);
-                            User f = User.getFriend(uid);
+                            User f = User.getUser(uid);
                             allUsers.add(f);
+                            for (int i = 0; i < FormManager.FF.listFriends.getModel().getSize(); i++) {
+                                if (FormManager.FF.listFriends.getModel().getElementAt(i).equals(f.getNickname() + "_" + f.getID())) {
+                                    String tips = "你的好友 " + f.getNickname() + " 上线了！";
+                                    JOptionPane.showMessageDialog(null, tips);
+                                    break;
+                                }
+                            }
                         }
                         Utils.updateAllUsersList(allUsers);
                     }
@@ -78,18 +91,24 @@ class Read extends Thread {
                         if (message.contains("&")) {
                             String from = message.split("&")[0];
                             User fromUser = User.getUser(Integer.parseInt(from));
-                            if (JOptionPane.showConfirmDialog(null, "请求添加您为好友，是否添加？", "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                            String tips = fromUser.getNickname() + "请求添加你为好友，是否同意？";
+                            if (JOptionPane.showConfirmDialog(null, tips, "提示", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                                 Account.addFriend(Chatter.curUser, fromUser);
                                 Utils.updateFriendsList();
                                 Kernel.sendMessage("%");
                             }
-                        } else if (message.contains("@")) {
+                        } else if (message.contains("->")) {
                             String from = message.substring(0, message.indexOf("->"));
                             String msg = message.substring(message.indexOf(":") + 1);
                             int fromID = Integer.parseInt(from);
-                            User fromUser = User.getFriend(fromID);
+                            User fromUser = User.getUser(fromID);
                             fromUser.getRecords().add(fromUser.getNickname() + ":" + msg);
-                            FormManager.FC.updateRecords();
+                            if (FormManager.FC.tosend != null)
+                                FormManager.FC.updateRecords();
+                            if (fromID != Chatter.curUser.getID() && !FormManager.FC.showing) {
+                                String tips = fromUser.getNickname() + "给你发消息了！";
+                                JOptionPane.showMessageDialog(null, tips);
+                            }
                         } else if (message.charAt(0) == '%') {
                             Utils.updateFriendsList();
                         }
