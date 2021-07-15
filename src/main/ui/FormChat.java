@@ -31,7 +31,13 @@ public class FormChat extends Form implements Runnable {
         initComponents();
     }
 
-    private void btnSendMsgActionPerformed(ActionEvent e) {
+    private void tpInputMsgKeyTyped(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            sendMessage();
+        }
+    }
+
+    private void sendMessage() {
         boolean online = false;
         String item = tosend.getNickname() + "_" + tosend.getID();
         for (int i = 0; i < FormManager.FF.listAllUsers.getModel().getSize(); i++) {
@@ -52,6 +58,10 @@ public class FormChat extends Form implements Runnable {
 
         Kernel.sendMessage("@" + tosend.getID() + ":" + message);
         tosend.getRecords().add(Chatter.curUser.getNickname() + ":" + message);
+    }
+
+    private void btnSendMsgActionPerformed(ActionEvent e) {
+        sendMessage();
 
         StyledDocument inputSDoc = tpInputMsg.getStyledDocument(); //获取读取的StyledDocument
         StyledDocument outSDoc = tpHisMsg.getStyledDocument(); //获取欲输出的StyledDocument
@@ -166,6 +176,12 @@ public class FormChat extends Form implements Runnable {
                 tpHisMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
                 tpHisMsg.setContentType("text/html");
                 spHisMsg.setViewportView(tpHisMsg);
+                tpInputMsg.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        tpInputMsgKeyTyped(e);
+                    }
+                });
             }
             ChatContentPane.add(spHisMsg, "span 2 2,grow");
 

@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 /**
@@ -20,19 +22,13 @@ public class FormLogin extends Form {
         initComponents();
     }
 
-    private void btnRegisterActionPerformed(ActionEvent e) {
-        FormManager.FL.show(false);
-        FormManager.FR.show(true);
+    private void pwPasswordKeyTyped(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
+        }
     }
 
-    private void btnLoginActionPerformed(ActionEvent e) {
-        // 调试专用
-        if (ftfAccount.getText().equals("s")) {
-            FormManager.FL.show(false);
-            FormManager.FF.show(true);
-            return;
-        }
-
+    private void login() {
         if (ftfAccount.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "用户名不可为空！", "警告", JOptionPane.WARNING_MESSAGE);
             return;
@@ -51,6 +47,15 @@ public class FormLogin extends Form {
             FormManager.FL.show(false);
             FormManager.FF.show(true);
         }
+    }
+
+    private void btnRegisterActionPerformed(ActionEvent e) {
+        FormManager.FL.show(false);
+        FormManager.FR.show(true);
+    }
+
+    private void btnLoginActionPerformed(ActionEvent e) {
+        login();
     }
 
     private void tfAccountActionPerformed(ActionEvent e) {
@@ -122,6 +127,13 @@ public class FormLogin extends Form {
             cbPassword.setFocusable(false);
             LoginContentPane.add(cbPassword);
             cbPassword.setBounds(290, 145, 71, 21);
+
+            pwPassword.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    pwPasswordKeyTyped(e);
+                }
+            });
 
             {
                 // compute preferred size

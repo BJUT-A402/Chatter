@@ -70,7 +70,7 @@ new FormModel {
 					name: "tpInputMsg"
 					"cursor": new java.awt.Cursor( 2 )
 					"font": new java.awt.Font( "Microsoft YaHei UI", 0, 13 )
-					addEvent( new FormEvent( "java.awt.event.KeyListener", "keyReleased", "tpInputMsgKeyReleased", true ) )
+					addEvent( new FormEvent( "java.awt.event.KeyListener", "keyTyped", "tpInputMsgKeyTyped", true ) )
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 3 2 1,grow"

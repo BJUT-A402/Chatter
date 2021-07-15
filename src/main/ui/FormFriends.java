@@ -73,6 +73,7 @@ public class FormFriends extends Form {
     }
 
 
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         Friends = new JFrame();
@@ -93,12 +94,12 @@ public class FormFriends extends Form {
         //======== Friends ========
         {
             Friends.setMinimumSize(new Dimension(220, 440));
-            Friends.setTitle("\u6e05\u98ce\u98de\u96ea");
             Friends.setResizable(false);
             Friends.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             Friends.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowActivated(WindowEvent e) {
+                    Friends.setTitle(Chatter.curUser.getNickname());
                     updateFriendsList();
                 }
 

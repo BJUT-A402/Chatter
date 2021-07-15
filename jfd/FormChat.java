@@ -2,11 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import net.miginfocom.swing.*;
-/*
- * Created by JFormDesigner on Wed Jul 14 17:12:09 CST 2021
- */
-
-
 
 /**
  * @author somnusym
@@ -26,6 +21,10 @@ public class FormChat  {
 	}
 
 	private void btnSendMsgActionPerformed(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void tpInputMsgKeyTyped(KeyEvent e) {
 		// TODO add your code here
 	}
 
@@ -108,8 +107,8 @@ public class FormChat  {
 				this.tpInputMsg.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 13));
 				this.tpInputMsg.addKeyListener(new KeyAdapter() {
 					@Override
-					public void keyReleased(KeyEvent e) {
-						tpInputMsgKeyReleased(e);
+					public void keyTyped(KeyEvent e) {
+						tpInputMsgKeyTyped(e);
 					}
 				});
 				this.spInputMsg.setViewportView(this.tpInputMsg);
