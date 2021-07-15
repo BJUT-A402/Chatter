@@ -79,7 +79,7 @@ public class Server {
     }
 
     // send message to a User (String)
-    public void sendMessageToUser(String msg, ServerUser userSender, int user, boolean add) {
+    public void sendMessageToUser(String msg, ServerUser userSender, int user, boolean add, boolean pic) {
         boolean find = false;
         for (ServerUser client : this.clients) {
             if (client.getUserId() == user && client != userSender) {
@@ -87,8 +87,14 @@ public class Server {
                 if (add) {
                     client.getOutStream().println(userSender + "&" + client);
                 } else {
-                    userSender.getOutStream().println(userSender + "->" + client + ":" + msg);
-                    client.getOutStream().println(userSender + "->" + client + ":" + msg);
+                    if (pic) {
+                        userSender.getOutStream().println(userSender + "->" + client + ":<img src='" + msg + "'>");
+                        client.getOutStream().println(userSender + "->" + client + ":<img src='" + msg + "'>");
+                    }
+                    else {
+                        userSender.getOutStream().println(userSender + "->" + client + ":" + msg);
+                        client.getOutStream().println(userSender + "->" + client + ":" + msg);
+                    }
                 }
             }
         }

@@ -24,24 +24,33 @@ public class UserHandler implements Runnable {
             // Gestion des messages private
             if (message.charAt(0) == '@') {
                 if (message.contains(":")) {
+                    System.out.println("private msg : <" + message);
                     if (message.charAt(1) == '<') {
-
+                        int firstSpace = message.indexOf(":");
+                        String userPrivate = message.substring(2, firstSpace);
+                        int userPrivateID = Integer.parseInt(userPrivate);
+                        server.sendMessageToUser(
+                                message.substring(
+                                        firstSpace + 1
+                                ), user, userPrivateID, false, true
+                        );
                     }
-                    System.out.println("private msg : " + message);
-                    int firstSpace = message.indexOf(":");
-                    String userPrivate = message.substring(1, firstSpace);
-                    int userPrivateID = Integer.parseInt(userPrivate);
-                    server.sendMessageToUser(
-                            message.substring(
-                                    firstSpace + 1
-                            ), user, userPrivateID, false
-                    );
+                    else {
+                        int firstSpace = message.indexOf(":");
+                        String userPrivate = message.substring(1, firstSpace);
+                        int userPrivateID = Integer.parseInt(userPrivate);
+                        server.sendMessageToUser(
+                                message.substring(
+                                        firstSpace + 1
+                                ), user, userPrivateID, false, false
+                        );
+                    }
                 }
             } else if (message.charAt(0) == '&') {
                 System.out.println("Add Friend");
                 String userPrivate = message.substring(1);
                 int userPrivateID = Integer.parseInt(userPrivate);
-                server.sendMessageToUser("", user, userPrivateID, true);
+                server.sendMessageToUser("", user, userPrivateID, true, false);
             } else if (message.charAt(0) == '%') {
                 server.broadcastMessages("%");
             } else {
