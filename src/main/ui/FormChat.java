@@ -22,7 +22,7 @@ public class FormChat extends Form implements Runnable {
     public void updateRecords() {
         StringBuilder sb = new StringBuilder();
         for (String str : tosend.getRecords()) {
-            sb.append(str).append("\n");
+            sb.append(str).append("<br>");
         }
         tpHisMsg.setText(sb.toString());
     }
